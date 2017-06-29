@@ -126,6 +126,7 @@
 				top: 30px;
 				color: #000;
 				display: none;
+				z-index: 997;
 			}
 			
 			div.loading::first-line,
@@ -192,7 +193,9 @@
 			.list_bc a:hover {
 				color: #29B4F0;
 			}
-			
+			.list_bc_active{
+				color: #29B4F0;
+			}
 			.code_wrapper_bc {
 				background-color: #111;
 				padding: 10px;
@@ -268,8 +271,20 @@
 				}
 			};
 			! function() {
+				//webComponent profill promise
+				pageData.component_profill_promise = new Promise(function(resolve, reject) {
+					if("import" in document.createElement("link")) resolve();
+					else {
+						var script = document.createElement("script");
+						script.setAttribute("async", "async");
+						script.setAttribute("defer", "defer");
+						document.head.appendChild(script);
+						script.onload = resolve;
+						script.onerror = reject;
+					}
+				});
 				//初始化顶部的菜单
-				pageData.model.map(function(item){
+				pageData.model.map(function(item,index){
 					var div=document.createElement("div");div.className="header_item_bc";
 					div.innerHTML="<a href='#'>"+item.Name+"</a>";
 					div.addEventListener("click",function(){
@@ -295,19 +310,15 @@
 						}
 					},false);
 					pageData.topHeaderDom.appendChild(div);
+					
 				});
-				//webComponent profill promise
-				pageData.component_profill_promise = new Promise(function(resolve, reject) {
-					if("import" in document.createElement("link")) resolve();
-					else {
-						var script = document.createElement("script");
-						script.setAttribute("async", "async");
-						script.setAttribute("defer", "defer");
-						document.head.appendChild(script);
-						script.onload = resolve;
-						script.onerror = reject;
+				if(document.querySelector(".header_bc_outer").children.length>1){
+						var event1 = document.createEvent('MouseEvents');
+						event1.initEvent("click", true, true);
+						event1.eventType = 'message';
+						document.querySelector(".header_bc_outer").children[1].dispatchEvent(event1);
 					}
-				});
+				
 			}();
 		</script>
 	</body>
