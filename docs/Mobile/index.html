@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div class="children_menu_wrapper">
+			<script type="text/javascript">
+				!(function() {
+					var dom = document.currentScript.ownerDocument.querySelector(".children_menu_wrapper").querySelectorAll(".list_bc")[0];
+					if(dom && dom != "") {
+						var event1 = document.createEvent('MouseEvents');
+						event1.initEvent("click", true, true);
+						event1.eventType = 'message';
+						dom.dispatchEvent(event1);
+					}
+				})();
+			</script>
+		</div>
+		<script type="text/javascript">
+			!(function() {
+				var model = [
+					{ Name: "浮层滚动阻止window窗体", Url: "docs/Mobile/children_docs/one.html" }
+				];
+				model.map(function(item) {
+					var div = document.createElement("div");
+					div.className = "list_bc";
+					div.innerHTML = "<a href='#'>" + item.Name + "</a>";
+					div.addEventListener("click", function() {
+						if(this.classList.contains("list_bc_active")) return;
+						if(document.querySelector(".list_bc_active")) document.querySelector(".header_item_bc_active").classList.remove("header_item_bc_active");
+						this.classList.add("list_bc_active");
+						var linkDom = document.querySelector("link[rel='import'][href='" + item.Url + "']");
+						//页面已经加载过后
+						if(linkDom) {
+							document.querySelector(".content_bc_outer").innerHTML = linkDom.import.querySelector(".children_content_wrapper") ? linkDom.import.querySelector(".children_content_wrapper").innerHTML : "";
+						} else { //页面还未加载
+							pageData.showLoading();
+							pageData.component_profill_promise.then(function() {
+								var cLinkDom = document.createElement("link");
+								cLinkDom.rel = "import";
+								cLinkDom.href = item.Url;
+								cLinkDom.onload = function() {
+
+									pageData.closeLoading();
+									document.querySelector(".content_bc_outer").innerHTML = cLinkDom.import.querySelector(".children_content_wrapper") ? cLinkDom.import.querySelector(".children_content_wrapper").innerHTML : "";
+								};
+								document.head.appendChild(cLinkDom);
+							});
+						}
+					}, false);
+					document.currentScript.ownerDocument.querySelector(".children_menu_wrapper").appendChild(div);
+				});
+				var dom = document.currentScript.ownerDocument.querySelector(".children_menu_wrapper").querySelectorAll(".list_bc")[0];
+				if(dom && dom != "") {
+					var event1 = document.createEvent('MouseEvents');
+					event1.initEvent("click", true, true);
+					event1.eventType = 'message';
+					dom.dispatchEvent(event1);
+				}
+			})();
+		</script>
+	</body>
+
+</html>

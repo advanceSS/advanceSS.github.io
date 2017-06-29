@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<meta name="apple-mobile-web-app-title" content="崔海峰博客">
+		<meta name="keywords" content="javaScript,css,html,性能优化,崔海峰" />
+		<meta name="description" content="个人技术类博客" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="崔海峰" />
+		<link rel="shortcut icon" href="advance.jpg" type="image/jpg" />
+		<title>崔海峰 个人博客</title>
+		<style type="text/css">
+			body {
+				overflow-x: hidden;
+				background-color: #eee;
+				color: #404040;
+				margin: 0;
+				font: 14px / 1.42857 "Microsoft YaHei", "微软雅黑", "Helvetica Neue", Helvetica, Arial, sans-serif;
+			}
+			
+			.hf_row {
+				display: flexbox;
+				display: -webkit-flex;
+				display: flex;
+			}
+			
+			.hf_full {
+				flex: 1;
+				-webkit-box-flex: 1;
+				-webkit-flex: 1;
+				width: 0%;
+			}
+			
+			.hf_vcenter {
+				-webkit-box-align: center;
+				align-items: center;
+				-webkit-align-items: center;
+			}
+			
+			.hf_center {
+				-webkit-box-pack: center;
+				justify-content: center;
+				-webkit-justify-content: center;
+			}
+			
+			.header_bc_outer {
+				width: 100%;
+				position: fixed;
+				top: 0;
+				left: 0;
+				padding-left: 20px;
+				height: 60px;
+				background-color: #000;
+				font-size: 0;
+				white-space: nowrap;
+				overflow-x: auto;
+				-webkit-overflow-scrolling: touch;
+			}
+			
+			.header_item_bc {
+				display: inline-block;
+				font-size: 14px;
+				color: #CCC;
+				padding-right: 20px;
+			}
+			
+			a {
+				text-decoration: none;
+				color: currentcolor;
+			}
+			
+			a:hover {
+				color: #FFF;
+			}
+			
+			.my_icon_bc {
+				width: 50px;
+				height: 50px;
+				position: relative;
+				font-size: 0;
+				white-space: nowrap;
+				display: inline-block;
+			}
+			
+			.body_bc_outer {
+				padding-top: 60px;
+				height: calc(100vh - 60px);
+				overflow-y: auto;
+				white-space: normal;
+				-webkit-overflow-scrolling: touch;
+			}
+			
+			.lend_bc {
+				width: 20px;
+			}
+			
+			.scroll_bc_outer {
+				height: 100%;
+				overflow-y: auto;
+				-webkit-overflow-scrolling: touch;
+				background-color: #FFF;
+			}
+			
+			.menu_right_bc {
+				width: 320px;
+				white-space: nowrap;
+				overflow-x: hidden;
+				text-overflow: ellipsis;
+				padding: 12px 8px 0;
+				box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+			}
+			
+			::-webkit-scrollbar {
+				display: none;
+			}
+			
+			div.loading,
+			label[class*=-btn].loading {
+				position: fixed;
+				left: 40px;
+				top: 30px;
+				color: #000;
+				display: none;
+			}
+			
+			div.loading::first-line,
+			label[class*=-btn].loading::first-line {
+				color: #FFF;
+			}
+			
+			div.loading::before,
+			label[class*=-btn].loading::before {
+				width: 4px;
+				height: 4px;
+				margin: auto;
+				content: '';
+				-webkit-animation: spinZoom 1s steps(8) infinite;
+				animation: spinZoom 1s steps(8) infinite;
+				border-radius: 100%;
+				box-shadow: 0 -10px 0 1px currentColor, 10px 0 currentColor, 0 10px currentColor, -10px 0 currentColor, -7px -7px 0 .5px currentColor, 7px -7px 0 1.5px currentColor, 7px 7px currentColor, -7px 7px currentColor;
+				/* center */
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+			}
+			/* loading动画 */
+			
+			@-webkit-keyframes spinZoom {
+				0% {
+					-webkit-transform: scale(.75) rotate(0);
+				}
+				100% {
+					-webkit-transform: scale(.75) rotate(360deg);
+				}
+			}
+			
+			@keyframes spinZoom {
+				0% {
+					transform: scale(.75) rotate(0);
+				}
+				100% {
+					transform: scale(.75) rotate(360deg);
+				}
+			}
+			
+			.header_item_bc_active {
+				color: #FFF;
+			}
+			
+			.list_bc {
+				padding-bottom: 12px;
+			}
+			
+			.list_bc:before {
+				content: "";
+				display: inline-block;
+				width: 7px;
+				height: 7px;
+				background-color: #FFF;
+				border: 1px solid #DDD;
+				border-radius: 50%;
+				margin-right: 3px;
+			}
+			
+			.list_bc a:hover {
+				color: #29B4F0;
+			}
+			
+			.code_wrapper_bc {
+				background-color: #111;
+				padding: 10px;
+				border-radius: 5px;
+				color: #a6e22e;
+				font-size: 12px;
+				line-height: 20px;
+				margin: 10px 0;
+			}
+			
+			.annotation_bc {
+				color: #75715e;
+			}
+			
+			.code_padding_bc {
+				padding-left: 2em;
+			}
+			
+			.code_bc {
+				padding-left: 5px;
+				padding-right: 5px;
+				color: #c7254e;
+				background: #f9f2f4;
+			}
+			
+			.content_bc_outer {
+				font-size: 16px;
+				line-height: 25px;
+				padding: 15px;
+				box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="loading"></div>
+		<div class="header_bc_outer hf_row hf_vcenter">
+			<div class="header_item_bc hf_row hf_vcenter"><img class="my_icon_bc" src="advance.jpg" /></div>
+			
+		</div>
+		<div class="body_bc_outer hf_row">
+			<!--
+            	作者：崔海峰
+            	时间：2017-06-28
+            	描述：内容模块
+            -->
+			<div class="scroll_bc_outer content_bc_outer hf_full">
+				
+			</div>
+			<div class="lend_bc"></div>
+			<!--
+            	作者：崔海峰
+            	时间：2017-06-28
+            	描述：菜单模块
+            -->
+			<div class="scroll_bc_outer menu_right_bc">
+				
+			</div>
+		</div>
+		<script type="text/javascript">
+			var pageData = {
+				rightMenuDom:document.querySelector(".menu_right_bc"),
+				topHeaderDom:document.querySelector(".header_bc_outer"),
+				model:[
+					{Name:"无线前端",Url:"docs/Mobile/index.html"}
+				],
+				showLoading:function(){
+					document.querySelector(".loading").style.display="block";
+				},
+				closeLoading:function(){
+					document.querySelector(".loading").style.display="none";
+				}
+			};
+			! function() {
+				//初始化顶部的菜单
+				pageData.model.map(function(item){
+					var div=document.createElement("div");div.className="header_item_bc";
+					div.innerHTML="<a href='#'>"+item.Name+"</a>";
+					div.addEventListener("click",function(){
+						if(this.classList.contains("header_item_bc_active")) return;
+						if(document.querySelector(".header_item_bc_active")) document.querySelector(".header_item_bc_active").classList.remove("header_item_bc_active");
+						this.classList.add("header_item_bc_active");
+						var linkDom=document.querySelector("link[rel='import'][href='"+item.Url+"']");
+						//页面已经加载过后
+						if(linkDom){
+							pageData.rightMenuDom.innerHTML=linkDom.import.querySelector(".children_menu_wrapper")?linkDom.import.querySelector(".children_menu_wrapper").innerHTML:"";
+						}else{//页面还未加载
+							pageData.showLoading();
+							pageData.component_profill_promise.then(function(){
+								var cLinkDom=document.createElement("link");
+								cLinkDom.rel="import";
+								cLinkDom.href=item.Url;								
+								cLinkDom.onload=function(){										
+									pageData.closeLoading();
+									pageData.rightMenuDom.innerHTML=cLinkDom.import.querySelector(".children_menu_wrapper")?cLinkDom.import.querySelector(".children_menu_wrapper").innerHTML:"";
+								};
+								document.head.appendChild(cLinkDom);
+							});
+						}
+					},false);
+					pageData.topHeaderDom.appendChild(div);
+				});
+				//webComponent profill promise
+				pageData.component_profill_promise = new Promise(function(resolve, reject) {
+					if("import" in document.createElement("link")) resolve();
+					else {
+						var script = document.createElement("script");
+						script.setAttribute("async", "async");
+						script.setAttribute("defer", "defer");
+						document.head.appendChild(script);
+						script.onload = resolve;
+						script.onerror = reject;
+					}
+				});
+			}();
+		</script>
+	</body>
+
+</html>
