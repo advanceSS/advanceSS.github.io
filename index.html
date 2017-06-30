@@ -306,9 +306,7 @@
 						if(this.classList.contains("header_item_bc_active")) return;
 						if(document.querySelector(".header_item_bc_active")) document.querySelector(".header_item_bc_active").classList.remove("header_item_bc_active");
 						this.classList.add("header_item_bc_active");
-						var linkDom = document.querySelector("link[rel='import'][href='" + item.Url + "']");
-						var right_item_active = document.querySelector(".list_bc_active");
-						if(right_item_active) right_item_active.classList.remove("list_bc_active");					
+						var linkDom = document.querySelector("link[rel='import'][href='" + item.Url + "']");									
 							pageData.showLoading();
 							pageData.component_profill_promise.then(function() {
 								var cLinkDom = document.createElement("link");
