@@ -193,9 +193,11 @@
 			.list_bc a:hover {
 				color: #29B4F0;
 			}
-			.list_bc_active{
+			
+			.list_bc_active {
 				color: #29B4F0;
 			}
+			
 			.code_wrapper_bc {
 				background-color: #111;
 				padding: 10px;
@@ -228,15 +230,16 @@
 				box-sizing: border-box;
 				-webkit-box-sizing: border-box;
 			}
-			.can_kao_bc{
+			
+			.can_kao_bc {
 				color: blue;
 				display: none;
 				font-size: 16px;
 				font-weight: bold;
 			}
-			.can_kao_bc:hover{
-				color:blue ;
-				
+			
+			.can_kao_bc:hover {
+				color: blue;
 			}
 		</style>
 	</head>
@@ -245,7 +248,7 @@
 		<div class="loading"></div>
 		<div class="header_bc_outer hf_row hf_vcenter">
 			<div class="header_item_bc hf_row hf_vcenter"><img class="my_icon_bc" src="advance.jpg" /></div>
-			
+
 		</div>
 		<div class="body_bc_outer hf_row">
 			<!--
@@ -254,7 +257,7 @@
             	描述：内容模块
             -->
 			<div class="scroll_bc_outer content_bc_outer hf_full">
-				
+
 			</div>
 			<div class="lend_bc"></div>
 			<!--
@@ -263,21 +266,22 @@
             	描述：菜单模块
             -->
 			<div class="scroll_bc_outer menu_right_bc">
-				
+
 			</div>
 		</div>
 		<script type="text/javascript">
 			var pageData = {
-				rightMenuDom:document.querySelector(".menu_right_bc"),
-				topHeaderDom:document.querySelector(".header_bc_outer"),
-				model:[
-					{Name:"无线前端",Url:"docs/Mobile/index.html"}
+				rightMenuDom: document.querySelector(".menu_right_bc"),
+				topHeaderDom: document.querySelector(".header_bc_outer"),
+				model: [
+					{ Name: "无线前端", Url: "docs/Mobile/index.html" },
+					{ Name: "性能优化", Url: "docs/Performance/index.html" }
 				],
-				showLoading:function(){
-					document.querySelector(".loading").style.display="block";
+				showLoading: function() {
+					document.querySelector(".loading").style.display = "block";
 				},
-				closeLoading:function(){
-					document.querySelector(".loading").style.display="none";
+				closeLoading: function() {
+					document.querySelector(".loading").style.display = "none";
 				}
 			};
 			! function() {
@@ -294,41 +298,38 @@
 					}
 				});
 				//初始化顶部的菜单
-				pageData.model.map(function(item,index){
-					var div=document.createElement("div");div.className="header_item_bc";
-					div.innerHTML="<a href='#'>"+item.Name+"</a>";
-					div.addEventListener("click",function(){
+				pageData.model.map(function(item, index) {
+					var div = document.createElement("div");
+					div.className = "header_item_bc";
+					div.innerHTML = "<a href='#'>" + item.Name + "</a>";
+					div.addEventListener("click", function() {
 						if(this.classList.contains("header_item_bc_active")) return;
 						if(document.querySelector(".header_item_bc_active")) document.querySelector(".header_item_bc_active").classList.remove("header_item_bc_active");
 						this.classList.add("header_item_bc_active");
-						var linkDom=document.querySelector("link[rel='import'][href='"+item.Url+"']");
-						//页面已经加载过后
-						if(linkDom){
-							pageData.rightMenuDom.innerHTML=linkDom.import.querySelector(".children_menu_wrapper")?linkDom.import.querySelector(".children_menu_wrapper").innerHTML:"";
-						}else{//页面还未加载
+						var linkDom = document.querySelector("link[rel='import'][href='" + item.Url + "']");
+						var right_item_active = document.querySelector(".list_bc_active");
+						if(right_item_active) right_item_active.classList.remove("list_bc_active");					
 							pageData.showLoading();
-							pageData.component_profill_promise.then(function(){
-								var cLinkDom=document.createElement("link");
-								cLinkDom.rel="import";
-								cLinkDom.href=item.Url;								
-								cLinkDom.onload=function(){										
+							pageData.component_profill_promise.then(function() {
+								var cLinkDom = document.createElement("link");
+								cLinkDom.rel = "import";
+								cLinkDom.href = item.Url+"?time="+new Date().getTime();
+								cLinkDom.onload = function() {
 									pageData.closeLoading();
-									pageData.rightMenuDom.innerHTML=cLinkDom.import.querySelector(".children_menu_wrapper")?cLinkDom.import.querySelector(".children_menu_wrapper").innerHTML:"";
+									pageData.rightMenuDom.innerHTML = cLinkDom.import.querySelector(".children_menu_wrapper") ? cLinkDom.import.querySelector(".children_menu_wrapper").innerHTML : "";
 								};
 								document.head.appendChild(cLinkDom);
-							});
-						}
-					},false);
+							});						
+					}, false);
 					pageData.topHeaderDom.appendChild(div);
-					
+
 				});
-				if(document.querySelector(".header_bc_outer").children.length>1){
-						var event1 = document.createEvent('MouseEvents');
-						event1.initEvent("click", true, true);
-						event1.eventType = 'message';
-						document.querySelector(".header_bc_outer").children[1].dispatchEvent(event1);
-					}
-				
+				if(document.querySelector(".header_bc_outer").children.length > 1) {
+					var event1 = document.createEvent('MouseEvents');
+					event1.initEvent("click", true, true);
+					event1.eventType = 'message';
+					document.querySelector(".header_bc_outer").children[1].dispatchEvent(event1);
+				}
 			}();
 		</script>
 	</body>
