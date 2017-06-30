@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div class="children_content_wrapper">
+			<a class="can_kao_bc" href="https://segmentfault.com/a/1190000009990033">参考</a>
+			<h4>首先通过<span class="code_bc">input</span>标签调取原生相册或者拍照功能</h4>
+			<div class="code_wrapper_bc">
+				  &lt;input type="file" id="myInput" accept="image/*;capture=camera"&gt;
+			</div>
+			<h4>然后通过<span class="code_bc">FileReader</span>读取图片信息</h4>
+			由于手机问题，这里可能会出现两个问题:<br />
+			1.图片类型读取不到<br />
+			2.手机拍出来的图片是翻转的<br />
+			对于图片类型获取不到，我们可以默认为<span class="code_bc">png</span><br />
+			对于图片翻转的问题，我们可以通过第三方的<span class="code_bc">exif.js</span>库提供的<span class="code_bc">api</span>来判断图片的翻转角度<br />
+			<h4>Orientation</h4>
+			<table style="width: 100%;">
+				<thead>
+					<tr>
+						<td>旋转角度</td><td>参数值</td>
+					</tr>
+				</thead>
+				<tbody >
+					<tr><td>0°</td><td>1</td></tr>
+					<tr><td>顺时针90°</td><td>6</td></tr>
+					<tr><td>逆时针90°</td><td>8</td></tr>
+					<tr><td>180°</td><td>3</td></tr>
+				</tbody>
+			</table>
+			<div>exif.js 获取 Orientation ：</div>
+			<div class="code_wrapper_bc">
+				EXIF.getData(file, function() {  <br />
+    				<span class="code_padding_bc"></span>var Orientation = EXIF.getTag(this, 'Orientation');<br />
+				});<br />
+			</div>
+			<h4>图片旋转</h4>
+			旋转需要用到<span class="code_bc">canvas</span>的 <span>rotate() </span>方法<br />
+			<div class="code_wrapper_bc">
+				ctx.rotate(angle);
+			</div>
+			rotate 方法的参数为旋转弧度。需要将角度转为弧度：degrees * Math.PI / 180<br />
+			旋转的中心点默认都在 canvas 的起点，即 ( 0, 0 )。旋转的原理如下图：<br />
+			<img src="../../../img/demo1.png" />
+			旋转之后，如果从 ( 0, 0 ) 点进行 drawImage()，那么画出来的位置就是在左图中的旋转 90 度后的位置，不在可视区域呢。旋转之后，坐标轴也跟着旋转了，想要显示在可视区域呢，需要将 ( 0, 0 ) 点往 y 轴的反方向移 y 个单位，此时的起始点则为 ( 0, -y )。同理，可以获得旋转 -90 度后的起始点为 ( -x, 0 )，旋转 180 度后的起始点为 ( -x, -y )。
+			<h4>压缩</h4>
+			手机拍出来的照片太大，而且使用 base64 编码的照片会比原照片大，那么上传的时候进行压缩就非常有必要的。现在的手机像素这么高，拍出来的照片宽高都有几千像素，用 canvas 来渲染这照片的速度会相对比较慢。因此第一步需要先对上传照片的宽高做限制，判断宽度或高度是否超出哪个范围，则等比压缩其宽高。
+			<div class="code_wrapper_bc">
+				var ratio = width / height;<br />
+				if(imgWidth > imgHeight && imgWidth > xx){<br />
+				   <span class="code_padding_bc"></span> imgWidth = xx;<br />
+				    <span class="code_padding_bc"></span>imgHeight = Math.ceil(xx / ratio);<br />
+				}else if(imgWidth < imgHeight && imgHeight > yy){<br />
+				    <span class="code_padding_bc"></span>imgWidth = Math.ceil(yy * ratio);<br />
+				    <span class="code_padding_bc"></span>imgHeight = yy;<br />
+				}<br />
+			</div>
+			第二步就通过 canvas.toDataURL() 方法来压缩照片质量。<br />
+			<div class="code_wrapper_bc">
+				canvas.toDataURL("image/jpeg", 1);
+			</div>
+			toDataURL() 方法返回一个包含图片展示的 data URI 。使用两个参数，第一个参数为图片格式，默认为 image/png。第二个参数为压缩质量，在指定图片格式为 image/jpeg 或 image/webp的情况下，可以从 0 到 1 的区间内选择图片的质量。
+			<div class="code_wrapper_bc">
+				var ipt = document.getElementById('files'),<br />
+				img = document.getElementById('preview'),<br />
+			    Orientation = null;<br />
+				ipt.onchange = function () {<br />
+				   <span class="code_padding_bc"></span> var file = ipt.files[0],<br />
+				        <span class="code_padding_bc"></span>reader = new FileReader(),<br />
+				        <span class="code_padding_bc"></span>image = new Image();<br />
+				        <br />
+				    <span class="code_padding_bc"></span>if(file){<br />
+				        <span class="code_padding_bc"></span><span class="code_padding_bc"></span>EXIF.getData(file, function() {<br />  
+				            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>Orientation = EXIF.getTag(this, 'Orientation');<br />
+				        <span class="code_padding_bc"></span>});<br />
+				        <span class="code_padding_bc"></span>reader.onload = function (ev) {<br />
+				            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>image.src = ev.target.result;<br />
+				            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>image.onload = function () {<br />
+				               <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> var imgWidth = this.width,<br />
+				                    <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>imgHeight = this.height;<br />
+				                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><div class="annotation_bc">// 控制上传图片的宽高</div><br />
+				                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>if(imgWidth > imgHeight && imgWidth > 750){<br />
+				                    <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>imgWidth = 750;<br />
+				                    <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>imgHeight = Math.ceil(750 * this.height / this.width);<br />
+				                <span class="code_padding_bc"></span><span class="code_padding_bc"></span>}else if(imgWidth < imgHeight && imgHeight > 1334){<br />
+				                    <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>imgWidth = Math.ceil(1334 * this.width / this.height);<br />
+				                    <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>imgHeight = 1334;<br />
+				                <span class="code_padding_bc"></span><span class="code_padding_bc"></span>}<br />				                
+				                <span class="code_padding_bc"></span><span class="code_padding_bc"></span>var canvas = document.createElement("canvas"),<br />
+				                <span class="code_padding_bc"></span><span class="code_padding_bc"></span>ctx = canvas.getContext('2d');<br />
+				                <span class="code_padding_bc"></span><span class="code_padding_bc"></span>canvas.width = imgWidth;<br />
+				                <span class="code_padding_bc"></span><span class="code_padding_bc"></span>canvas.height = imgHeight;<br />
+				                <span class="code_padding_bc"></span><span class="code_padding_bc"></span>if(Orientation && Orientation != 1){<br />
+				                    <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>switch(Orientation){<br />
+				                        <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>case 6:     // 旋转90度<br />
+				                            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>canvas.width = imgHeight;    <br />
+				                            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>canvas.height = imgWidth;    <br />
+				                            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>ctx.rotate(Math.PI / 2);<br />
+				                            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>// (0,-imgHeight) 从旋转原理图那里获得的起始点<br />
+				                            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>ctx.drawImage(this, 0, -imgHeight, imgWidth, imgHeight);<br />
+				                            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>break;<br />
+				                        <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>case 3:     // 旋转180度<br />
+				                            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>ctx.rotate(Math.PI);    <br />
+				                            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>ctx.drawImage(this, -imgWidth, -imgHeight, imgWidth, imgHeight);<br />
+				                            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>break;<br />
+				                        <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>case 8:     // 旋转-90度<br />
+				                            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>canvas.width = imgHeight; <br />   
+				                            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>canvas.height = imgWidth;  <br />  
+				                            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>ctx.rotate(3 * Math.PI / 2);  <br />  
+				                            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>ctx.drawImage(this, -imgWidth, 0, imgWidth, imgHeight);<br />
+				                            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>break;<br />
+				                    <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>}<br />
+				                    <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>ctx.drawImage(this, 0, 0, imgWidth, imgHeight);<br />
+				                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>}else{
+				                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>}<br />
+				                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>img.src = canvas.toDataURL("image/jpeg", 0.8);<br />
+				            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>}<br />
+				        <span class="code_padding_bc"></span>}<br />
+				        <span class="code_padding_bc"></span>reader.readAsDataURL(file);<br />
+				    }<br />
+				}<br />
+			</div>
+		</div>
+	</body>
+
+</html>

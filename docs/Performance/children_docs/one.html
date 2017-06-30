@@ -8,9 +8,50 @@
 
 	<body>
 		<div class="children_content_wrapper">
+			<a class="can_kao_bc" href="https://aotu.io/notes/2016/12/26/jd-index-2016-summary/">参考</a>
 			<h4>首先是样式和脚本</h4>
 			过去是将页面引用的所有样式都直出在页面上，没有外链的<span class="code_bc">CSS</span>，基于浏览器是渐进式渲染的模式，可以做出首先只加载首屏需要的<span class="code_bc">css</span>以及<span class="code_bc">js</span>以及<span class="code_bc">html</span>模板
-			而非首屏的楼层样式拆分到各自楼层中，和楼层的模板放在一起，按需加载。
+			而非首屏的楼层样式拆分到各自楼层中，和楼层的模板放在一起，按需加载。<br />
+			每一个楼层对应一个widget的组件，组件包含自己的<span class="code_bc">HTML</span> 、<span class="code_bc">CSS</span>、 <span class="code_bc">JavaScript文</span>文件
+			<div class="code_wrapper_bc">			
+				<div class="annotation_bc">// yunyuqiao.com/js/rec_tpl.min.js</div>
+					jsonCallBack_rec_tpl({<br />
+					   	<span class="code_padding_bc"></span>dom: "div>p>/p>/div>",<br />
+					    <span class="code_padding_bc"></span>style: ".rec_list{overflow:hidden;height:100px}",<br />
+					    <span class="code_padding_bc"></span>time: 1479195351434,<br />
+					    <span class="code_padding_bc"></span>version: "ff78610a0ef9cdbb"<br />
+					});
+			</div>
+			<h4>然后将模板、数据分离缓存</h4>
+			我们可以对模板和数据进行缓存，这样当用户第二次加载的时候就可以不用再去请求网络资源，而可以直接从本地获取了。<br />
+			但缓存之后如何进行更新呢？我们可以通过进行MD5校验版本来实现<br />
+			对数据来说，数据是由后端给出的，我们可以让后端同学将可以缓存的接口数据计算出一个MD5值作为版本号，然后直出在页面上，同时在接口中返回这个版本号，这样当前端去加载是首先判断版本号是否一致，以此来判断是直接读缓存还是从网络请求资源
+			<h4>然后利用空闲时间自动加载楼层及图片</h4>
+			前文提到，我们使用了按需加载来提升页面性能，但这样带来的问题就是只有当用户滚动楼层到浏览器视窗内，楼层才会开始加载，这样用户滚动得稍微快一点就会出现很多<span class="code_bc">loading</span>动画。<br />
+			为了减少这种情况的发生，让用户觉得楼层也加载很快，在不影响页面滚动、加载性能的前提下我们在用户操作的空闲时间自动加载剩余的楼层和图片。
+			将楼层的加载操作放入一个队列中，我们可以在用户停止滚动操作3s后开始自动加载这个队列中的楼层，而当用户开始滚动的时候清空这个加载队列，停止滚动3秒后又重新开始加载。通过这样处理可以合理利用用户浏览的空闲时间来加载页面，让用户感觉页面加载更快
+			<div class="code_wrapper_bc">
+				var scrollTimer = null;<br />
+				var isScrolling = false;<br />
+				$(window).bind('scroll.loadFloor', function (e) {<br />
+				 <span class="code_padding_bc"></span> isScrolling = true;<br />
+				  <span class="code_padding_bc"></span>clearTimeout(autoLoadTimer);<br />
+				  <span class="code_padding_bc"></span>clearTimeout(scrollTimer);<br />
+				  <span class="code_padding_bc"></span>autoLoadingQueue = [];<br />
+				  <span class="code_padding_bc"></span>resourceLoader && resourceLoader.pause();<br />
+				  <span class="code_padding_bc"></span>scrollTimer = setTimeout(function () {<br />
+				    <span class="code_padding_bc"></span><span class="code_padding_bc"></span>isScrolling = false;<br />
+					  <span class="code_padding_bc"></span><span class="code_padding_bc"></span>if (pageConfig.idleTimeLoad) {<br />
+				      <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>autoLoadTimer = setTimeout(autoLoad, 3000);<br />
+				    <span class="code_padding_bc"></span><span class="code_padding_bc"></span>}<br />
+				  <span class="code_padding_bc"></span>}, 200);<br />
+				});<br />
+				function autoLoad () {<br />
+				  <span class="code_padding_bc"></span>if (!isScrolling) {<br />
+				    <span class="code_padding_bc"></span><span class="code_padding_bc"></span>runFloorLoadQueue();<br />
+				  <span class="code_padding_bc"></span>}<br />
+				}<br />
+			</div>
 		</div>
 	</body>
 

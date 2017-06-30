@@ -233,13 +233,28 @@
 			
 			.can_kao_bc {
 				color: blue;
-				display: none;
 				font-size: 16px;
 				font-weight: bold;
 			}
 			
 			.can_kao_bc:hover {
 				color: blue;
+			}
+			table{
+				border-collapse:collapse;
+			}
+			td{
+				border: 1px solid #DDD;	
+				padding: 5px 0;			
+			}
+			thead{
+				background-color: #EEE;
+				color: #000;
+				font-weight: bold;
+				padding: 5px 0;
+			}
+			h4{
+				margin: 5px 0;
 			}
 		</style>
 	</head>
@@ -306,18 +321,86 @@
 						if(this.classList.contains("header_item_bc_active")) return;
 						if(document.querySelector(".header_item_bc_active")) document.querySelector(".header_item_bc_active").classList.remove("header_item_bc_active");
 						this.classList.add("header_item_bc_active");
-						var linkDom = document.querySelector("link[rel='import'][href='" + item.Url + "']");									
+						var linkDom = document.querySelector("link[rel='import'][href='" + item.Url + "']");
+											
+						if(linkDom) {
+							pageData.rightMenuDom.innerHTML = linkDom.import.querySelector(".children_menu_wrapper") ? linkDom.import.querySelector(".children_menu_wrapper").innerHTML : "";
+							[].map.call(pageData.rightMenuDom.querySelectorAll(".list_bc"), function(items) {
+								items.addEventListener("click", function() {
+									var itemUrl = this.dataset.url;									
+									if(document.querySelector(".list_bc_active")) document.querySelector(".list_bc_active").classList.remove("list_bc_active");
+									this.classList.add("list_bc_active");
+									var linkDom = document.querySelector("link[rel='import'][href='" + itemUrl + "']");
+									//页面已经加载过后
+									if(linkDom) {
+										document.querySelector(".content_bc_outer").innerHTML = linkDom.import.querySelector(".children_content_wrapper") ? linkDom.import.querySelector(".children_content_wrapper").innerHTML : "";
+									} else { //页面还未加载
+										pageData.showLoading();
+										pageData.component_profill_promise.then(function() {
+											var cLinkDom = document.createElement("link");
+											cLinkDom.rel = "import";
+											cLinkDom.href = itemUrl;
+											cLinkDom.onload = function() {
+												pageData.closeLoading();
+												document.querySelector(".content_bc_outer").innerHTML = cLinkDom.import.querySelector(".children_content_wrapper") ? cLinkDom.import.querySelector(".children_content_wrapper").innerHTML : "";
+											};
+											document.head.appendChild(cLinkDom);
+										});
+									}
+								}, false);
+							});
+							if(pageData.rightMenuDom.querySelectorAll(".list_bc").length > 0) {
+								var dom = pageData.rightMenuDom.querySelectorAll(".list_bc")[0];
+								var event1 = document.createEvent('MouseEvents');
+								event1.initEvent("click", true, true);
+								event1.eventType = 'message';
+								dom.dispatchEvent(event1);
+							}
+						} else {
 							pageData.showLoading();
 							pageData.component_profill_promise.then(function() {
 								var cLinkDom = document.createElement("link");
 								cLinkDom.rel = "import";
-								cLinkDom.href = item.Url+"?time="+new Date().getTime();
+								cLinkDom.href = item.Url;
 								cLinkDom.onload = function() {
 									pageData.closeLoading();
 									pageData.rightMenuDom.innerHTML = cLinkDom.import.querySelector(".children_menu_wrapper") ? cLinkDom.import.querySelector(".children_menu_wrapper").innerHTML : "";
+									[].map.call(pageData.rightMenuDom.querySelectorAll(".list_bc"), function(item) {
+										item.addEventListener("click", function() {
+											var itemUrl = this.dataset.url;											
+											if(document.querySelector(".list_bc_active")) document.querySelector(".list_bc_active").classList.remove("list_bc_active");
+											this.classList.add("list_bc_active");
+											var linkDom = document.querySelector("link[rel='import'][href='" + itemUrl + "']");
+											//页面已经加载过后
+											if(linkDom) {
+												document.querySelector(".content_bc_outer").innerHTML = linkDom.import.querySelector(".children_content_wrapper") ? linkDom.import.querySelector(".children_content_wrapper").innerHTML : "";
+											} else { //页面还未加载
+												pageData.showLoading();
+												pageData.component_profill_promise.then(function() {
+													var cLinkDom = document.createElement("link");
+													cLinkDom.rel = "import";
+													cLinkDom.href = itemUrl;
+													cLinkDom.onload = function() {
+														pageData.closeLoading();
+														document.querySelector(".content_bc_outer").innerHTML = cLinkDom.import.querySelector(".children_content_wrapper") ? cLinkDom.import.querySelector(".children_content_wrapper").innerHTML : "";
+													};
+													document.head.appendChild(cLinkDom);
+												});
+											}
+										}, false);
+									});
+									if(pageData.rightMenuDom.querySelectorAll(".list_bc").length > 0) {
+										var dom = pageData.rightMenuDom.querySelectorAll(".list_bc")[0];
+										var event1 = document.createEvent('MouseEvents');
+										event1.initEvent("click", true, true);
+										event1.eventType = 'message';
+										dom.dispatchEvent(event1);
+									}
 								};
 								document.head.appendChild(cLinkDom);
-							});						
+							});
+						}
+
 					}, false);
 					pageData.topHeaderDom.appendChild(div);
 
