@@ -256,6 +256,11 @@
 			h4{
 				margin: 5px 0;
 			}
+			img{
+				max-width: 100%;
+				box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+			}
 		</style>
 	</head>
 
@@ -290,7 +295,8 @@
 				topHeaderDom: document.querySelector(".header_bc_outer"),
 				model: [
 					{ Name: "无线前端", Url: "docs/Mobile/index.html" },
-					{ Name: "性能优化", Url: "docs/Performance/index.html" }
+					{ Name: "性能优化", Url: "docs/Performance/index.html" },
+					{ Name: "关注方向", Url: "docs/Attention/index.html" }
 				],
 				showLoading: function() {
 					document.querySelector(".loading").style.display = "block";

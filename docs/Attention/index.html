@@ -12,8 +12,8 @@
 		<script type="text/javascript">
 			!(function() {
 				var model = [
-					{ Name: "按需加载", Url: "docs/Performance/children_docs/one.html" },
-					{ Name: "代码方式", Url: "docs/Performance/children_docs/two.html" }
+					{ Name: "css", Url: "docs/Attention/children_docs/one.html" },
+					
 				];
 				model.map(function(item) {
 					var div = document.createElement("div");
@@ -21,7 +21,7 @@
 					div.dataset.url=item.Url;
 					div.innerHTML = "<a href='#'>" + item.Name + "</a>";									
 					document.currentScript.ownerDocument.querySelector(".children_menu_wrapper").appendChild(div);
-				});	
+				});				
 			})();
 		</script>
 	</body>

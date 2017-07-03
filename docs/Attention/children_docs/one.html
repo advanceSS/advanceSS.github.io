@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div class="children_content_wrapper">
+			<h4>CSS 特性查询</h4>
+			特性查询你只需要使用 <span class="code_bc">@support</span> , 它允许我们嵌入<span class="code_bc">css</span>的表示式进行条件判断，如果支持的浏览器则会执行 包含的语句。
+			<div class="code_wrapper_bc">
+				@supports ( display: flex ) { <br />
+				 <span class="code_padding_bc"></span> .foo { display: flex; } <br />
+				}<br />				
+			</div>
+			除此之外，使用<span class="code_bc">and</span>以及<span class="code_bc">not</span> 我们可以实现更加复杂的查询语句。举个例子，我们可以判断这个浏览器是不是只支持老板 <span class="code_bc">flex</span>语法。
+			<div class="code_wrapper_bc">
+				 @supports ( display: flexbox )<br />
+		         and<br />
+          		 ( not ( display: flex ) ) {<br />
+  				<span class="code_padding_bc"></span>.foo { display: flexbox; }<br />
+				 }<br />
+			</div>			
+			<img src="../../../img/demo2.png" />
+			<h4>Grid Layout 网格布局</h4>
+			<span class="code_bc">CSS</span>的网格布局第一了一套创建单元格布局的系统。和 <span class="code_bc">Flex</span>布局有些相似，但是它确实更多针对页面布局而诞生，它拥有非常的语法属性。网格布局是由<span class="code_bc">(display:grid)</span>的容器下，使用 网格布局，我们可以明确设置这些单元格元素的放置位置和顺序
+			<a href="https://github.com/FremyCompany/css-grid-polyfill/" class="code_bc">profill</a>
+			<div class="code_wrapper_bc">
+				.hg {<br />
+				   <span class="code_padding_bc"></span> display: grid;<br />
+				    <span class="code_padding_bc"></span>grid-template-areas: "header header header"<br />
+				                        <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>"navigation main ads"<br />
+				                        <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>"footer footer footer";<br />
+				    <span class="code_padding_bc"></span>grid-template-columns: 150px 1fr 150px;<br />
+				    <span class="code_padding_bc"></span>grid-template-rows: 100px <br />
+				                        <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>1fr<br />
+				                        <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>30px;<br />
+				    <span class="code_padding_bc"></span>min-height: 100vh;<br />
+				}
+			</div>
+			<img src="../../../img/demo3.png" />
+			<h4>CSS 变量<a class="can_kao_bc" href="http://www.ruanyifeng.com/blog/2017/05/css-variables.html">参考</a></h4>
+			关于 <span class="code_bc">CSS</span> 自定义变量 新的草案介绍可以通过自定义变量进行<span class="code_bc">CSS</span>的赋值。比如我们如果当算设置主题色，我们需要在样式表的很多地方用到这样的颜色。我们可以将这些颜色设置为变量，然后在其他地方引用，而不是直接进行赋值。
+			<div class="code_wrapper_bc">
+				:root {<br />
+				 <span class="code_padding_bc"></span> --theme-colour: cornflowerblue;	<br />			
+				}		<br />		
+				h1 { color: var(--theme-colour); }  <br />
+				a { color: var(--theme-colour); }  <br />
+				strong { color: var(--theme-colour); } <br />
+				<div class="annotation_bc">//通过js统一修改</div>
+				const rootEl = document.documentElement;  <br />
+				rootEl.style.setProperty('--theme-colour', 'plum');<br />
+			</div>
+			<img src="../../../img/demo4.png" />
+		</div>
+	</body>
+
+</html>
