@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="children_content_wrapper">
+			<a class="can_kao_bc" href="https://mp.weixin.qq.com/s?__biz=MzIwNjQwMzUwMQ==&amp;mid=2247483910&amp;idx=1&amp;sn=71990e4e3db408ba03e058f8d01ae60f&amp;scene=21#wechat_redirect">参考</a>
+			首页的很多样式和脚本，需要在同步的时候就初始化，但是，如果每次都传输一些不变的静态文件或者<span class="code_bc">HTML</span>，实在是太浪费了，如果<span class="code_bc">HTML/CSS/JS</span>一直不变，那直接缓存到客户端不就好了<br />
+			于是首页的第二项优化，就展示了威力，<span class="code_bc">localstorage</span>，关于这个客户端存储，陌生的同学可以查一查。也可以直接阅读我接下来要写的聊一聊系列文章。 
+			我们把不变的<span class="code_bc">JS/CSS/HTML</span>全部存储到<span class="code_bc">localstorage</span>中去，下次加载首页的时候。在特定的位置，不必再从服务端把特定位置的<span class="code_bc">JS/CSS/HTML</span>传过来。只需要传一句话----""就行。
+			<div class="code_wrapper_bc">
+				&lt;!DOCTYPE HTML&gt;<br />
+				&lt;html&gt;<br />
+				   <span class="code_padding_bc"></span> &lt;head&gt;<br />
+				        <span class="code_padding_bc"></span><span class="code_padding_bc"></span>&lt;meta charset="utf-8"/&gt;<br />
+				    <span class="code_padding_bc"></span>&lt;/head&gt;<br />
+				    <span class="code_padding_bc"></span>&lt;body&gt;<br />
+				        <span class="code_padding_bc"></span><span class="code_padding_bc"></span>&lt;div data-local="test1"&gt;<br />
+				            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>这部分内容非常多将会缓存起来<br />
+				        <span class="code_padding_bc"></span><span class="code_padding_bc"></span>&lt;/div&gt;<br />
+				        <span class="code_padding_bc"></span>&lt;script&gt;<br />
+				            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>function cacheOne(attrid) {<br />
+				                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>var content = document.querySelector('[data-local="' + attrid + '"]').outerHTML;<br />
+				                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>localStorage.setItem(attrid, content);<br />
+				            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>}<br />
+				            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>cacheOne('test1');<br />
+				        <span class="code_padding_bc"></span>&lt;/script&gt;<br />
+				    <span class="code_padding_bc"></span>&lt;/body&gt;<br />
+				&lt;/html&gt;<br />
+			</div>
+			下次，再访问的时候，我们使用服务端把缓存起来的<span class="code_bc">html</span>不传送，而是只传送读取相关的<span class="code_bc">JS</span>，代码如下，效果如下图所示。
+			<div class="code_wrapper_bc">
+				&lt;!DOCTYPE HTML&gt;<br />
+				&lt;html&gt;<br />
+				   <span class="code_padding_bc"></span> &lt;head&gt;<br />
+				        <span class="code_padding_bc"></span><span class="code_padding_bc"></span>&lt;meta charset="utf-8"/&gt;<br />
+				    <span class="code_padding_bc"></span>&lt;/head&gt;<br />
+				    <span class="code_padding_bc"></span>&lt;body&gt;<br />
+				        <span class="code_padding_bc"></span><span class="code_padding_bc"></span>&lt;script type="text/javascript" data-local="test1"&gt;<br />
+				            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>function readOne(attrid) {<br />
+				                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>var content = localStorage.getItem(attrid);<br />
+				                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>document.querySelector('[data-local="' + attrid + '"]').outerHTML = content;<br />
+				            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>}<br />
+				            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>readOne('test1');<br />
+				        <span class="code_padding_bc"></span><span class="code_padding_bc"></span>&lt;/script&gt;<br />
+				    <span class="code_padding_bc"></span>&lt;/body&gt;<br />
+				&lt;/html&gt;<br />
+			</div>	
+			我们看到，虽然展示内容相同，但是第二次传输的时候，页面的量明显减小。而且使用这种方式我们使用的地方越多，这种优势就越明显。<br />
+			百度移动端首页的很多<span class="code_bc">CSS/HTML/JS</span>就是这样缓存在客户端的。<br />
+			有同学会说，那么如何知道什么时候该传读<span class="code_bc">local</span>，什么时候该传写<span class="code_bc">local</span>呢？<br /> 
+			很简单，我们在写入<span class="code_bc">local</span>的时候，同时在<span class="code_bc">Cookie</span>中种下当前所有要缓存的内容的版本(MD5戳)就行。<br /> 
+			因为<span class="code_bc">cookie</span>是会在同步访问的时候，传送到服务端的，而<span class="code_bc">local</span>不会，所以，我们在服务端决定要传送内容，还是传送读取<span class="code_bc">local</span>代码。就靠我们种下的<span class="code_bc">cookie</span>了。我们在这里，使用<span class="code_bc">php</span>来做一个实验：<br />
+			<div class="code_wrapper_bc">
+				&lt;!DOCTYPE HTML&gt;<br />
+			   &lt;html&gt;<br />
+			       <span class="code_padding_bc"></span> &lt;head&gt;<br />
+			           <span class="code_padding_bc"></span><span class="code_padding_bc"></span> &lt;meta charset="utf-8"/&gt;<br />
+			        <span class="code_padding_bc"></span>&lt;/head&gt;<br />
+			        <span class="code_padding_bc"></span>&lt;body&gt;<br />
+			            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>&lt;?php $curversion='1'?&gt;<br />
+			            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>&lt;?php if ($_COOKIE['localversion'] !== $curversion) {?&gt;<br />
+			            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>&lt;div data-local="test1"&gt;<br />
+			                <span class="code_padding_bc"></span><span class="code_padding_bc"></span>这部分内容非常多将会缓存起来<br />
+			                <span class="code_padding_bc"></span><span class="code_padding_bc"></span>这部分内容非常多将会缓存起来<br />
+			            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>&lt;/div&gt;<br />
+			            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>&lt;script&gt;<br />
+			                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>function cacheOne(attrid) {<br />
+			                    <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>var content = document.querySelector('[data-local="' + attrid +'"]').outerHTML;<br />
+			                    <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>localStorage.setItem(attrid, content);<br />
+			                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>}<br />
+			                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>cacheOne('test1');<br />
+			                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>document.cookie="localversion=<?php echo $curversion?>;";<br />
+			            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>&lt;/script&gt;<br />
+			            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>&lt;?php } else {?&gt;<br />
+			                <span class="code_padding_bc"></span><span class="code_padding_bc"></span>&lt;script type="text/javascript" data-local="test1"&gt;<br />
+			                    <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>function readOne(attrid) {<br />
+			                        <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>var content = localStorage.getItem(attrid);<br />
+			                        <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>document.querySelector('[data-local="' + attrid + '"]').outerHTML = content;<br />
+			                    <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>}<br />
+			                   <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> readOne('test1');<br />
+			                <span class="code_padding_bc"></span><span class="code_padding_bc"></span></script&gt;<br />
+			           &lt;?php }?&gt;<br />
+			        <span class="code_padding_bc"></span>&lt;/body&gt;<br />
+			    &lt;/html&gt;<br />
+			</div>
+			我们在<span class="code_bc">php</span>中判断，如果<span class="code_bc">cookie</span>中有<span class="code_bc">version</span>，证明种过<span class="code_bc">cookie</span>，写过<span class="code_bc">local</span>，所以，不用传内容了，直接传<span class="code_bc">script</span>就好了，如果没有就要传输并且写入。我们可以看到效果，同样的页面，第一次访问的时候，内容大小是1.6K，再次刷新的时候，内容量已经减小到了474b。
+			
+		</div>
+	</body>
+</html>

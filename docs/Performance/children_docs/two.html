@@ -10,8 +10,30 @@
 		<div class="children_content_wrapper">
 			<h4>CSS JS选择器ID化</h4>
 			这一点可能很多人不相信，而一段时间的总结和实践后我发现，ID选择器是最快的， 主业务逻辑的元素绑定ID是一种非常不错的做法，而给ID写样式，也不是一种糟糕的实践，而可以一定程度上加快解析，渲染的速度。详情可以参见Google首页的样式 ， 非常多的ID写法.
-			<h4>视图层使用js模版，或者完整的View框架（React），以Lazyload的形式分块加载</h4>
 			<br />
+			<h4>修改元素的样式,避免多次操作dom造成回流</h4>
+			1.通过<span class="code_bc">cssText </span>
+			<div class="code_wrapper_bc">
+				demo.style.cssText += "background: blue;color:red;";
+			</div>
+			2.通过添加<span class="code_bc">class</span>
+			<div class="code_wrapper_bc">
+				&lt;style type="text/css"&gt;<br />
+					.demo{<br />
+					<span class="code_padding_bc"></span>	background-color: blue;<br />
+						<span class="code_padding_bc"></span>color: red;<br />
+					}<br />
+				&lt;/style&gt;<br />
+				demo.classList.add("demo");<br />
+			</div>
+			3.通过<span class="code_bc">document.styleSheets</span><br />
+			<span class="code_bc">deleteRule(n)</span>: 删除第n条cssRule；<br />
+			<span class="code_bc">insertRule(rule, n)</span>: 在第n处插入一条cssRule<br />
+			<div class="code_wrapper_bc">
+				 const style = document.styleSheets[0];<br />
+    			 style.insertRule('div.demo {background: blue}',1);
+			</div>
+			<h4>视图层使用js模版，或者完整的View框架（React），以Lazyload的形式分块加载</h4>			
 			看看淘宝和天猫首页是怎么做的就知道了，将视图模版化，访问者滚动时才加载对应的数据，从而很大程度上减少一次性数据的传输量.
 		</div>
 	</body>
