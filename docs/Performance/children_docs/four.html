@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="children_content_wrapper">
+			<h4>display:none</h4>
+			<div class="code_wrapper_bc">
+				&lt;style&gt;<br />
+				.img-purple {<br />
+				  <span class="code_padding_bc"></span>  background-image: url(../image/purple.png);<br />
+				}<br />
+				&lt;/style&gt;<br />
+				&lt;img src="../image/pink.png" style="display:none"&gt;<br />
+				&lt;div class="img-purple" style="display:none"&gt;&lt;/div&gt;<br />
+			</div>
+			图片资源请求如下：<br />
+			<img src="../../../img/demo5.png" /><br />
+			设置了display:none属性的元素，图片不会渲染出来，但会加载。<br />
+			原理：设置了<span class="code_bc">display:none</span>的元素，还是会构建<span class="code_bc">DOM</span>树的,只不过在渲染的时候，不会计算位置而已.<br />
+			当父级元素设置了<span class="code_bc">display:none</span>之后，他的子集的背景就不会渲染也不会参与构建，所以图片存在于<span class="code_bc">display:none</span>子集里面的背景图片是不会加载也不会渲染的，而<span class="code_bc">&lt;img /&lt;</span>是会参与构建<span class="code_bc">DOM</span>树的，所以也会加载<br />
+			<div class="code_wrapper_bc">
+				&lt;style&gt;<br />
+				.img-purple {<br />
+				  <span class="code_padding_bc"></span>  background-image: url(../image/purple.png);<br />
+				}<br />
+				&lt;/style&gt;<br />
+				&lt;div style="display:none;"&gt;<br />
+					<span class="code_padding_bc"></span>&lt;img src="../image/pink.png" style="display:none"&gt;<br />
+					<span class="code_padding_bc"></span>&lt;div class="img-purple" style="display:none"&gt;&lt;/div&gt;<br />
+				&lt;/div&gt;				
+			</div>
+			图片资源请求如下：<br />
+			<img src="../../../img/demo6.png" /><br />
+			设置了<span class="code_bc">display:none</span>属性元素的子元素，样式表中的背景图片不会渲染出来，也不会加载；而<span class="code_bc">&lt;img&gt;</span>标签的图片不会渲染出来，但会加载。<br />
+			<h4>分析浏览器渲染机制可得：</h4>	
+			解析<span class="code_bc">HTML</span>【遇到&lt;img&gt;标签加载图片】 —&gt; 构建DOM树<br />
+			加载样式 —&gt; 解析样式【遇到背景图片链接不加载】 —&gt; 构建样式规则树<br />
+			加载<span class="code_bc">avascript</span>j —&gt; 执行<span class="code_bc">avascript</span>代码<br />
+			把<span class="code_bc">DOM</span>树和样式规则树匹配构建渲染树【加载渲染树上的背景图片】<br />
+			计算元素位置进行布局<br />
+			绘制【开始渲染图片<br />
+		</div>
+	</body>
+</html>

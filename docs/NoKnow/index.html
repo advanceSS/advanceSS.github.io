@@ -10,12 +10,9 @@
 		<div class="children_menu_wrapper">		
 		</div>
 		<script type="text/javascript">
-			!(function() {
+			!(function() {				
 				var model = [
-					{ Name: "按需加载", Url: "docs/Performance/children_docs/one.html" },
-					{ Name: "代码方式", Url: "docs/Performance/children_docs/two.html" },
-					{ Name: "百度缓存的思想", Url: "docs/Performance/children_docs/three.html" },
-					{ Name: "图片加载与渲染规则", Url: "docs/Performance/children_docs/four.html" }
+					{ Name: "opener", Url: "docs/NoKnow/children_docs/one.html" },					
 				];
 				model.map(function(item) {
 					var div = document.createElement("div");
@@ -23,7 +20,7 @@
 					div.dataset.url=item.Url;
 					div.innerHTML = "<a href='#'>" + item.Name + "</a>";									
 					document.currentScript.ownerDocument.querySelector(".children_menu_wrapper").appendChild(div);
-				});	
+				});				
 			})();
 		</script>
 	</body>
