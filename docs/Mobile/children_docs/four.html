@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div class="children_content_wrapper">
+			<a href="http://isux.tencent.com/inner-scroll-layout.html" class="can_kao_bc">参考</a>
+			<img src="../../../img/demo7.png" /> 其中page扮演传统页面&lt;body&gt;的角色。这是一个预留设计，防止为了满足某些功能或交互体验需要，一个页面同时出现多个类似结构页面的情况。或者这么说吧，把所有页面内容放在一个page中，此时page就好比一个可以移动的房子，回头你跳槽来腾讯了，房子可以一起带过来，原来的位置可以被其他房子代替。但是，你如果直接放在&lt;body&gt;中，由于&lt;body&gt;只能是一个，不动产，此时想要做整体迁移，难度就较大，同时项目几乎成型，全局修改成本高高风险大。不过凡事都有两面性，这样的折腾可以减少你白头发的数目，因为你会因操劳过度头发直接脱掉的
+			<br />
+			<h4>page相关CSS如下：</h4>
+			<div class="code_wrapper_bc">
+				.page { position: absolute; top: 0; right: 0; bottom: 0; left: 0; }
+			</div>
+			应该很好理解，绝对定位，满屏拉伸，等同于：
+			<div class="code_wrapper_bc">
+				.page { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+			</div>
+			对于固定的头部header或者固定的侧边side, 你可以使用语义明确的position:fixed定位，或者直接使用position:absolute，因为滚动容器跟他们平级，所以，absolute其实就是fixed效果。
+			<br /><br /> 讲到这里就不得不说点题外话，很多人会遇到移动端position:fixed的底部输入框定位的头疼问题，如何解决？就是使用本文介绍的内滚动布局，然后底部使用position:absolute模拟fixed效果
+			<div class="code_wrapper_bc">
+				.header { height: 62px; position: absolute; top: 0; right: 0; left: 0; } <br /><br />
+				.side { width: 200px; position: absolute; top: 62px; bottom: 0; left: 0; }<br /><br />
+				.content { position: absolute; top: 62px; right: 0; bottom: 0; left: 200px; overflow: auto; }
+			</div>
+
+		</div>
+	</body>
+
+</html>

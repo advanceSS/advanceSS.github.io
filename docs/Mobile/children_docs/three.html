@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="children_content_wrapper">
+			<a href="http://eux.baidu.com/blog/2017/06/浏览器返回的缓存问题" class="can_kao_bc">参考</a>
+			我们在entry页展示了用户的手机号，当用户修改完返回entry页，应该看到的是修改后的手机号。但是在不同浏览器下，其表现并不一致。某些浏览器（safari、baidu T7、UC等）下，返回后JS初始化代码不执行，所以不会从服务器拉取新的手机号（注意，这是浏览器机制，和缓存无关）
+			<br />比如page1已经访问过了，返回后是之前访问时的状态，当我从page1 => page2, 如果在page1里的input填过东西，返回后就不用重新填写了，体验会比较好，可惜在这里成为了开发上的一个坑。而我们熟悉的Chrome浏览器，在返回的时候仅仅是静态资源会走缓存，页面还是会初始化，所以不存在这个问题
+			<br />
+			解决方案：凡是会保存<span class="code_bc">history</span>快照的浏览器都不会真正销毁页面，当离开这个页面的时候，如果调用一个<span class="code_bc">setTimeout</span>延迟执行的函数，<span class="code_bc">setTimeout</span>内注册的回调函数会在再次进入该页面时入栈执行。所以可以这样解决
+			<div class="code_wrapper_bc">
+				var ua = navigator.userAgent.toLowerCase();<br />
+				<div class="annotation_bc">//safari对unload的支持有问题，当然也可以直接使用pagehide</div>
+        		var unload = /iphone|ipad|ipod/.test(ua) ? "pagehide" : "unload";<br />
+        		window.addEventListener(unload, function() {<br />
+				  <span class="code_padding_bc"></span>  setTimeout(function () {<br />
+				        <span class="code_padding_bc"></span><span class="code_padding_bc"></span>init(); //页面初始化函数<br />
+				    <span class="code_padding_bc"></span>}, 200);<br />
+				});<br />
+			</div>
+		</div>
+	</body>
+</html>
