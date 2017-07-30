@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div class="children_content_wrapper">
+			<a href="http://imweb.io/topic/56592b8a823633e31839fc01" class="can_kao_bc">参考</a>
+			<h4>Service Worker的身份</h4>
+			<div>service的意思是服务，Worker的意思是工人，那么Service Worker的意思就是服务员。这个员工是2014年6月HTML5新招的实习生，目前在试用中。在此之前，已经有一位老员工，它叫Web Worker。那么问题来了，Boss是谁？Boss就是浏览器。准确来说，每个页面的javascript运行主线程都是一个Boss。 这里先谈一下大的背景。Boss很厉害，在页面上指点江山，呼风唤雨。但他有个局限：同一时刻只做一件事（单线程）。当一些很耗时的杂事让Boss去处理时，在处理的过程中他就无暇顾及其它重要的事了。在用户看来，页面没人管了，Boss不干事了！这时Boss就很郁闷。为了保证Boss能处理更重要的事情，董事会（W3C）终于招聘了一个新员工：Web worker。这下，Boss终于可以从耗时的杂事中解放出来了，他只需要把Web worker叫过来说：“这些事情拿去做，没做完不要来找我”。Web worker领到任务后默默地到自己的工位（线程）去干活，完成之后给Boss发了个邮件（postMessage）。Boss收到邮件（onmessage）后欣慰地点了点头。 扯了半天好像还没谈到新员工啊。。。不急，下面就讲到了。 Boss下班了（页面关闭）,Web worker也收拾东西回家了。这样执行了很久，直至2014年6月，董事会发现一个问题：“居然没有人在老板下班后加班？”。于是，又招了一个专职加班的：Service Worker。它被赋予的绩效目标如下：</div>
+			<div>1.入职（install）后永不下班，而能更新。</div>
+			<div>2.能处理Boss需要的资源（HTTPS请求），以便离线时也能让BOSS取到数据（从cache中）</div>
+			<div>3.能向客户推送消息(push notifications)</div>
+			<div>4.不允许越权管理Boss的事（DOM ACCESS）</div>
+			总地来说，Service worker是独立于页面的一个运行环境，它在页面关闭后仍可以运行。同时，也能对它负责的页面的网络请求进行截取和返回请求（类似于Fiddler）。
+			<h4>使用条件</h4>
+			<div>求协议条件 HTTPS。 毕竟给Service Worker的权利较大，可以直接截取和返回用户的请求，所以了于安全考虑，目前只能在HTTPS环境下才能使用Service Worker</div>
+			<div><br />页面文件代码</div>
+			<div class="code_wrapper_bc">
+				 if (navigator.serviceWorker) {<br />
+			        <div class="annotation_bc"><span class="code_padding_bc"></span>// 注册Service Worker scope表示作用的页面的path</div>
+			        <div class="annotation_bc"><span class="code_padding_bc"></span>// register函数返回Promise</div>
+			       <span class="code_padding_bc"></span> navigator.serviceWorker.register('./service-worker.js', {scope: './'})<br /> 
+			            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>.then(function (registration) {<br />
+			                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>console.log(registration);<br />
+			            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>})<br />
+			            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>.catch(function (e) {<br />
+			                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>console.error(e);<br />
+			            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>})<br />
+			    <span class="code_padding_bc"></span>} else {<br />
+			       <span class="code_padding_bc"></span><span class="code_padding_bc"></span> console.log('Service Worker is not supported in this browser.')<br />
+			    }<br />
+			</div>
+			<div><br />Service Worker文件：service-worker.js</div>
+			<div class="code_wrapper_bc">
+				importScripts('js/cache-polyfill.js'); // cache 扩展<br />
+<br />
+var CACHE_VERSION = 'app-v1'; <span class="annotation_bc">// 缓存文件的版本</span><br />
+var CACHE_FILES = [ <span class="annotation_bc">// 需要缓存的页面文件</span><br />
+   <span class="code_padding_bc"></span> '/',<br />
+    <span class="code_padding_bc"></span>'images/background.jpeg',<br />
+    <span class="code_padding_bc"></span>'js/app.js',<br />
+    <span class="code_padding_bc"></span>'css/styles.css'<br />
+];<br />
+<br />
+<br />
+self.addEventListener('install', function (event) { <span class="annotation_bc">// 监听worker的install事件</span><br />
+    <span class="code_padding_bc"></span>event.waitUntil( // <span class="annotation_bc">延迟install事件直到缓存初始化完成</span><br />
+        <span class="code_padding_bc"></span><span class="code_padding_bc"></span>caches.open(CACHE_VERSION)<br />
+            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>.then(function (cache) {<br />
+               <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> console.log('Opened cache');<br />
+                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>return cache.addAll(CACHE_FILES);<br />
+           <span class="code_padding_bc"></span><span class="code_padding_bc"></span> })<br />
+    <span class="code_padding_bc"></span>);<br />
+});<br />
+<br />
+self.addEventListener('activate', function (event) { <span class="annotation_bc">// 监听worker的activate事件</span><br />
+    <span class="code_padding_bc"></span>event.waitUntil( <span class="annotation_bc">// 延迟activate事件直到</span><br />
+        <span class="code_padding_bc"></span><span class="code_padding_bc"></span>caches.keys().then(function(keys){<br />
+            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>return Promise.all(keys.map(function(key, i){ <span class="annotation_bc">// 清除旧版本缓存</span><br />
+                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>if(key !== CACHE_VERSION){<br />
+                   <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> return caches.delete(keys[i]);<br />
+                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>}<br />
+            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>}))<br />
+       <span class="code_padding_bc"></span><span class="code_padding_bc"></span> })<br />
+    <span class="code_padding_bc"></span>)<br />
+});<br />
+<br />
+self.addEventListener('fetch', function (event) { <span class="annotation_bc">// 截取页面的资源请求</span><br />
+    <span class="code_padding_bc"></span>event.respondWith( <span class="annotation_bc">// 返回页面的资源请求</span><br />
+       <span class="code_padding_bc"></span><span class="code_padding_bc"></span> caches.match(event.request).then(function(res){ <span class="annotation_bc">// 判断缓存是否命中</span><br />
+            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>if(res){  <span class="annotation_bc">// 返回缓存中的资源</span><br />
+               <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> return res;<br />
+           <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> }<br />
+            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>requestBackend(event); <span class="annotation_bc">// 执行请求备份操作</span><br />
+       <span class="code_padding_bc"></span><span class="code_padding_bc"></span> })<br />
+    <span class="code_padding_bc"></span>)<br />
+});<br />
+<br />
+function requestBackend(event){  <span class="annotation_bc">// 请求备份操作</span><br />
+    <span class="code_padding_bc"></span>var url = event.request.clone();<br />
+   <span class="code_padding_bc"></span> return fetch(url).then(function(res){ <span class="annotation_bc">// 请求线上资源</span><br />
+        <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="annotation_bc">//if not a valid response send the error</span><br />
+       <span class="code_padding_bc"></span><span class="code_padding_bc"></span> if(!res || res.status !== 200 || res.type !== 'basic'){<br />
+           <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> return res;<br />
+       <span class="code_padding_bc"></span><span class="code_padding_bc"></span> }<br />
+<br />
+        var response = res.clone();<br />
+<br />
+        <span class="code_padding_bc"></span>caches.open(CACHE_VERSION).then(function(cache){ <span class="annotation_bc">// 缓存从线上获取的资源</span><br />
+            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>cache.put(event.request, response);<br />
+        <span class="code_padding_bc"></span>});<br />
+<br />
+        <span class="code_padding_bc"></span><span class="code_padding_bc"></span>return res;
+    <span class="code_padding_bc"></span><br />})
+}<br />
+			</div>
+			<div>Service Worker生命周期</div>
+			<img src="../../../img/demo8.png"  />
+			<div>Service Worder在安装（install）和激活(activate)后，会进入正常工作状态。当它负责的页面在浏览器中被打开，它就会对页面的请求进行处理。在其它情况下（除了特殊情况:service worker会定时更新），Service worker处理暂停状态，不会占用内存和CPU资源。</div>
+			<img src="../../../img/demo9.png"  />
+			上图为在第一次打开页面后，关闭网络，再次打开的页面请求。页面在离线情况下仍然能打开，并且能获取到相应的样式和脚本资源。从图中可以看出，资源的获取途径是“from ServiceWorker”，说明确实是serviceWorker在起作用了
+		</div>
+	</body>
+
+</html>

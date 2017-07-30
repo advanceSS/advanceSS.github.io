@@ -1,7 +1,7 @@
 //添加Caches的扩展
 importScripts("js/cache-polyfill.js");
 
-var version="app_v2";
+var version="app_v3";
 var cache_files=[
 	"img/demo1.png",
 	"img/demo2.png",
@@ -10,8 +10,11 @@ var cache_files=[
 	"img/demo5.png",
 	"img/demo6.png",
 	"img/demo7.png",
+	"img/demo8.png",
+	"img/demo9.png",
 	"advance.jpg",
 	"docs/Attention/children_docs/one.html",
+	"docs/Attention/children_docs/two.html",
 	"docs/Attention/index.html",
 	"docs/Mobile/children_docs/one.html",
 	"docs/Mobile/children_docs/two.html",
