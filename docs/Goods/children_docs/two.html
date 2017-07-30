@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div class="children_content_wrapper">
+			<a href="https://github.com/ccforward/cc/issues/69" class="can_kao_bc">参考</a>
+			<a href="http://wenjunjiang.win/2017/04/20/深入理解JSON/" class="can_kao_bc">参考</a>
+			<div>按照<span class="code_bc">JSON</span> 的规范，使用 <span class="code_bc">JSON.stringify() </span>做对象序列化时，如果一个属性为函数或者为<span class="code_bc">undefined</span>，那这个属性就会被忽略</div>
+			<div class="code_wrapper_bc">
+				const data1 = {<br />
+				<span class="code_padding_bc"></span>a: 'aaa',<br />
+				<span class="code_padding_bc"></span>fn: function() {<br />
+				<span class="code_padding_bc"></span><span class="code_padding_bc"></span>return true<br />
+				<span class="code_padding_bc"></span>}<br /> }
+				<br /> JSON.stringify(data)
+				<br />
+				<br />
+				<span class="annotation_bc">// 结果是  "{"a":"aaa"}"</span><br />
+				<br /> const data1 = {<br />
+				<span class="code_padding_bc"></span>a: 'aaa',<br />
+				<span class="code_padding_bc"></span>b: undefined<br /> }
+				<br /> JSON.stringify(data)
+				<br />
+				<br />
+				<span class="annotation_bc">// 结果是  "{"a":"aaa"}"</span><br />
+			</div>
+			<div><span class="code_bc">stringify</span> 函数的定义为 <span class="code_bc">JSON.stringify(value [, replacer [, space]])</span> 后面还带有我不常用两个可选参数 <span class="code_bc">replacer</span> 和 <span class="code_bc">space</span>
+				<span class="code_bc">replacer</span> 其实就是一个自定义函数，可以改变 <span class="code_bc">JSON.stringify</span> 的行为，<span class="code_bc">space</span> 就是格式化输出，最大值为 10，非整数时取值为 1</div>
+			<h4>stringify 输出 Function</h4>
+			<div>本质上无论怎么改，<span class="code_bc">stringify</span> 还是不会输出<span class="code_bc">Function</span> ，但是 <span class="code_bc">Function</span> 可以调用<span class="code_bc">toString()</span> 方法的，所以思路就很明了了。</div>
+			<div class="code_wrapper_bc">
+				const data1 = {<br />
+				<span class="code_padding_bc"></span>a: 'aaa',<br />
+				<span class="code_padding_bc"></span>fn: function() {<br />
+				<span class="code_padding_bc"></span><span class="code_padding_bc"></span>return true<br />
+				<span class="code_padding_bc"></span>}<br /> }
+				<br /> const replace = function(k ,v) {<br />
+				<span class="code_padding_bc"></span>if(typeof v === 'function') {<br />
+				<span class="code_padding_bc"></span><span class="code_padding_bc"></span>return Function.prototype.toString.call(v)<br />
+				<span class="code_padding_bc"></span>}<br />
+				<span class="code_padding_bc"></span>return v<br /> }
+				<br /> JSON.stringify(data1, replace)<br />
+				<br />
+				<div class="annotation_bc">// 结果 "{"a":"aaa","fn":"function () {\n return true\n }"}"</div>
+			</div>
+		</div>
+	</body>
+
+</html>

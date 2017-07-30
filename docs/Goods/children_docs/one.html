@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="children_content_wrapper">
+			<a href="http://www.jianshu.com/p/80bd2465844e" class="can_kao_bc">参考</a>
+			<h4>单侧投影</h4>
+			<div class="code_wrapper_bc">
+				<div class="annotation_bc">//将扩张半径，设为高斯模糊的负值</div>
+				box-shadow: 0 5px 4px -4px black;
+			</div>
+			<div style="width: 50px;height: 50px;background-color: #FCb340;box-shadow: 0 5px 4px -4px black;"></div>
+			<h4>邻边投影</h4>
+			<div class="code_wrapper_bc">
+				<div class="annotation_bc">//将将扩张半径，设为高斯模糊的负值的一半；将位移值设为高斯模糊的一半。</div>
+				box-shadow:3px 3px 6px -3px black;				
+			</div>
+			<div style="width: 50px;height: 50px;background-color: #FCb340;box-shadow:3px 3px 6px -3px black;	"></div>
+			<h4>双侧投影</h4>
+			<div class="code_wrapper_bc">
+				<div class="annotation_bc">//将单侧投影技巧应用两次。</div>
+				box-shadow:5px 0px 5px -5px black, -5px 0px 5px -5px black;			
+			</div>
+			<div style="width: 50px;height: 50px;background-color: #FCb340;box-shadow:5px 0px 5px -5px black, -5px 0px 5px -5px black;	"></div>
+		</div>
+	</body>
+</html>
