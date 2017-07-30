@@ -1,7 +1,7 @@
 //添加Caches的扩展
 importScripts("js/cache-polyfill.js");
 
-var version="app_v3";
+var version="app_v4";
 var cache_files=[
 	"img/demo1.png",
 	"img/demo2.png",
@@ -28,6 +28,9 @@ var cache_files=[
 	"docs/Performance/children_docs/three.html",
 	"docs/Performance/children_docs/four.html",
 	"docs/Performance/index.html",
+	"docs/Goods/children_docs/one.html",
+	"docs/Goods/children_docs/two.html",
+	"docs/Goods/index.html",
 ];
 
 //self: 表示 Service Worker 作用域, 也是全局变量
