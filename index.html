@@ -241,24 +241,29 @@
 			.can_kao_bc:hover {
 				color: blue;
 			}
-			table{
-				border-collapse:collapse;
+			
+			table {
+				border-collapse: collapse;
 			}
-			td{
-				border: 1px solid #DDD;	
-				padding: 5px 0;			
+			
+			td {
+				border: 1px solid #DDD;
+				padding: 5px 0;
 			}
-			thead{
+			
+			thead {
 				background-color: #EEE;
 				color: #000;
 				font-weight: bold;
 				padding: 5px 0;
 			}
-			h4{
+			
+			h4 {
 				margin: 5px 0;
 				margin-top: 20px;
-			}	
-			img{
+			}
+			
+			img {
 				max-width: 100%;
 				box-sizing: border-box;
 				-webkit-box-sizing: border-box;
@@ -291,7 +296,7 @@
 
 			</div>
 		</div>
-		<script type="text/javascript">			
+		<script type="text/javascript">
 			var pageData = {
 				rightMenuDom: document.querySelector(".menu_right_bc"),
 				topHeaderDom: document.querySelector(".header_bc_outer"),
@@ -331,12 +336,12 @@
 						if(document.querySelector(".header_item_bc_active")) document.querySelector(".header_item_bc_active").classList.remove("header_item_bc_active");
 						this.classList.add("header_item_bc_active");
 						var linkDom = document.querySelector("link[rel='import'][href='" + item.Url + "']");
-											
+
 						if(linkDom) {
 							pageData.rightMenuDom.innerHTML = linkDom.import.querySelector(".children_menu_wrapper") ? linkDom.import.querySelector(".children_menu_wrapper").innerHTML : "";
 							[].map.call(pageData.rightMenuDom.querySelectorAll(".list_bc"), function(items) {
 								items.addEventListener("click", function() {
-									var itemUrl = this.dataset.url;									
+									var itemUrl = this.dataset.url;
 									if(document.querySelector(".list_bc_active")) document.querySelector(".list_bc_active").classList.remove("list_bc_active");
 									this.classList.add("list_bc_active");
 									var linkDom = document.querySelector("link[rel='import'][href='" + itemUrl + "']");
@@ -376,7 +381,7 @@
 									pageData.rightMenuDom.innerHTML = cLinkDom.import.querySelector(".children_menu_wrapper") ? cLinkDom.import.querySelector(".children_menu_wrapper").innerHTML : "";
 									[].map.call(pageData.rightMenuDom.querySelectorAll(".list_bc"), function(item) {
 										item.addEventListener("click", function() {
-											var itemUrl = this.dataset.url;											
+											var itemUrl = this.dataset.url;
 											if(document.querySelector(".list_bc_active")) document.querySelector(".list_bc_active").classList.remove("list_bc_active");
 											this.classList.add("list_bc_active");
 											var linkDom = document.querySelector("link[rel='import'][href='" + itemUrl + "']");
@@ -421,6 +426,17 @@
 					document.querySelector(".header_bc_outer").children[1].dispatchEvent(event1);
 				}
 			}();
+
+			//注册service Worker
+			if(navigator.serviceWorker) {
+				navigator.serviceWorker.register("./service_worker.js", { scope: "./" })
+					.then(function(registration) {
+						console.log(registration);
+					})
+					.catch(function(e) {
+						console.error(e);
+					})
+			}
 		</script>
 	</body>
 
