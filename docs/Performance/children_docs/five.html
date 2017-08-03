@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="children_content_wrapper">
+			<a href="https://css-tricks.com/the-critical-request/" class="can_kao_bc">参考</a>
+			<div><strong>HTML</strong>-最高优先级</div>
+			<div><strong>样式</strong>-最高优先级</div>
+			<div><strong>Ajax / XHR / fetch（） </strong>-高优先级</div>
+			<div><strong>图片</strong>-优先级为低。唯一一个可以根据视口改变优先级的资源，但会在适配视口的时候升级为中等优先级(media="only screen and (max-width: 48rem)")</div>
+			<div><strong>脚本</strong>遵循复杂的加载优先级排序方案</div>
+			<ul>
+				<li>加载使用的脚本&lt;script src="name.js"&gt;&lt;/script&gt;,标记如果在图像之前，优先级将被设置为高</li>
+				<li>加载使用的脚本&lt;script src="name.js"&gt;&lt;/script&gt;,标记如果在图像之后，优先级将被设置为中</li>
+				<li>加载使用的脚本&lt;script src="name.js"&gt;&lt;/script&gt;,标记使用async或defer，优先级将被设置为低</li>
+				<li>加载使用的脚本&lt;script src="name.js"&gt;&lt;/script&gt;,标记使用type=“module”，优先级将被设置为低</li>				
+			</ul>
+			<div><strong>字体</strong>-即使您的CSS文件引用了一个 @font-face 字体，它将不会被请求，直到它在选择器上使用，并且该选择器与页面上的元素匹配</div>
+			<h4>控制资源的优先级</h4>
+			<div><strong>Preload</strong>&lt;(link rel="preload" href="font.woff" /&gt;)指示浏览器以font.woff“高”优先级添加到浏览器的下载队列。</div>
+			<h4>as属性告诉浏览器它将要下载什么。可能的as值包括：</h4>
+			<ul>
+				<li>script</li>
+				<li>style</li>
+				<li>font</li>
+				<li>image</li>
+				<li>media</li>
+				<li>document</li>
+				<li><a href="https://fetch.spec.whatwg.org/#concept-request-destination">完整的资源列表</a></li>
+				<li>省略as属性或具有无效值等同于XHR请求，其中浏览器不知道它正在获取什么，并以相当低的优先级获取它</li>
+			</ul>
+			<div>预加载字体必须包含预加载指令</div>
+			<div class="code_bc">&lt;link rel="preload" href="font.woff2" as="font" type="font/woff2" crossorigin&gt;</div>
+			<div>当您使用匿名模式CORS获取字体时，您必须添加一个crossorigin属性</div>
+			<h4>利用预加载异步加载资源</h4>
+			<div class="code_wrapper_bc">
+				<div class="annotation_bc">//异步加载css，不堵塞渲染</div>
+&lt;link rel="preload" as="style" href="async_style.css" onload="this.rel='stylesheet'"&gt;<br />
+<div class="annotation_bc">//异步加载js，&lt;script async&gt;会堵塞窗口的onload事件,预加载则不会</div>
+&lt;link rel="preload" as="script" href="async_script.js"<br />
+<span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>onload="var script = document.createElement('script');<br />
+        <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>script.src = this.href;<br />
+        <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>document.body.appendChild(script);"&gt;<br />
+			</div>
+		</div>
+	</body>
+</html>

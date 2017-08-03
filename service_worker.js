@@ -27,6 +27,7 @@ var cache_files=[
 	"docs/Performance/children_docs/two.html",
 	"docs/Performance/children_docs/three.html",
 	"docs/Performance/children_docs/four.html",
+	"docs/Performance/children_docs/five.html",
 	"docs/Performance/index.html",
 	"docs/Goods/children_docs/one.html",
 	"docs/Goods/children_docs/two.html",
