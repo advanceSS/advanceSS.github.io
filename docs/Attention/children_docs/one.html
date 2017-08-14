@@ -55,6 +55,25 @@
 				rootEl.style.setProperty('--theme-colour', 'plum');<br />
 			</div>
 			<img src="../../../img/demo4.png" />
+			<h4><a href="http://www.webhek.com/post/css-contain-property.html?1494601763835" class="can_kao_bc">参考</a>contain</h4>
+			<div>这个 contain 属性的主要目的是隔离指定内容的样式、布局和渲染。开发人员可以使用这个 contain 属性来限制指定的DOM元素和它的子元素同页面上其它内容的联系；我们可以把它看做一个iframe。跟iframe很相似，它能建立起一个边界，产生一个新的根布局；保证了它和它的子元素的DOM变化不会触发父元素重新布局、渲染等。</div>
+			<div>这个 contain 属性可以有7种不同的值</div>
+			<ul>
+				<li>none 无</li>
+				<li>layout 开启布局限制</li>
+				<li>style 开启样式限制</li>
+				<li>paint 开启渲染限制</li>
+				<li>size 开启size限制</li>
+				<li>content 开启除了size外的所有限制</li>
+				<li>strict开启 layout, style 和 paint 三种限制组合</li>
+			</ul>
+			<h4>contain 使用场景举例</h4>
+			<h5>页面小饰件(widgets)</h5>
+			<div>通常在页面上添加第三方小饰件时，我们几乎对它们没有什么太多的控制，比如分享工具，它们可能会因为具有相当耗资源的布局、样式、渲染操作等大幅度的降低整个页面的执行效率。为了将它们同我们的网站隔离开来，使用 contain: strict; 将第三方的小饰件同页面上的其它内容隔离开来。</div>
+			<h5>屏幕外的内容</h5>
+			<div>如果你有一个导航栏或其它类似的东西并不在屏幕可现实范围内出现，浏览器同样会为这些不可见的元素进行渲染。通过使用 contain: paint; 浏览器就会忽略渲染这些屏幕外不可见的元素，从而能更快的渲染其它内容。</div>
+			<h5>计算容器尺寸</h5>
+			<div>我在文字开头提到过这个问题，使用 contain: strict; 可以 免去很多关于容器尺寸控制的问题。比如，子元素的内容会影响容器的大小，使用 contain 属性就可以避免这样的问题产生。</div>
 		</div>
 	</body>
 
