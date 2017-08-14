@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div class="children_content_wrapper">
+			<a href="http://www.ruanyifeng.com/blog/2016/11/intersectionobserver_api.html" class="can_kao_bc">参考</a>
+			<div>网页开发时，常常需要了解某个元素是否进入了"视口"（viewport），即用户能不能看到它。</div>
+			<div>目前有一个新的 IntersectionObserver API，可以自动"观察"元素是否可见，Chrome 51+ 已经支持。由于可见（visible）的本质是，目标元素与视口产生一个交叉区，所以这个 API 叫做"交叉观察器"</div>
+			<div class="code_wrapper_bc">
+				var io = new IntersectionObserver(callback, option);
+			</div>
+			<div>
+				上面代码中，IntersectionObserver是浏览器原生提供的构造函数，接受两个参数：callback是可见性变化时的回调函数，<br /> option是配置对象（该参数可选）。
+				<br />构造函数的返回值是一个观察器实例。实例的observe方法可以指定观察哪个 DOM 节点。
+			</div>
+			<div class="code_wrapper_bc">
+				<div class="annotation_bc">// 开始观察</div>
+				io.observe(document.getElementById('example'));<br />
+				<br />
+				<div class="annotation_bc">// 停止观察</div>
+				io.unobserve(element);<br />
+				<br />
+				<div class="annotation_bc">// 关闭观察器</div>
+				io.disconnect();
+			</div>
+			<div>上面代码中，observe的参数是一个 DOM 节点对象。如果要观察多个节点，就要多次调用这个方法</div>
+			<div class="code_wrapper_bc">
+				io.observe(elementA); io.observe(elementB);
+			</div>
+			<h4>二、callback 参数</h4>
+			<div>目标元素的可见性变化时，就会调用观察器的回调函数callback。<br /> callback一般会触发两次。一次是目标元素刚刚进入视口（开始可见），另一次是完全离开视口（开始不可见）。
+			</div>
+			<div class="code_wrapper_bc">
+				var io = new IntersectionObserver(<br />
+				<span class="code_padding_bc"></span> entries => {<br />
+				<span class="code_padding_bc"></span><span class="code_padding_bc"></span>console.log(entries);<br />
+				<span class="code_padding_bc"></span>}<br /> );
+				<br />
+			</div>
+			<div>上面代码中，回调函数采用的是箭头函数的写法。callback函数的参数（entries）是一个数组，每个成员都是一个IntersectionObserverEntry对象。举例来说，如果同时有两个被观察的对象的可见性发生变化，entries数组就会有两个成员。</div>
+			<h4>三、IntersectionObserverEntry 对象</h4>
+			<div>IntersectionObserverEntry对象提供目标元素的信息，一共有六个属性</div>
+			<div class="code_wrapper_bc">
+				{<br />
+				<span class="code_padding_bc"></span> time: 3893.92,<br />
+				<span class="code_padding_bc"></span>rootBounds: ClientRect {<br />
+				<span class="code_padding_bc"></span><span class="code_padding_bc"></span>bottom: 920,<br />
+				<span class="code_padding_bc"></span><span class="code_padding_bc"></span>height: 1024,<br />
+				<span class="code_padding_bc"></span><span class="code_padding_bc"></span>left: 0,<br />
+				<span class="code_padding_bc"></span><span class="code_padding_bc"></span>right: 1024,<br />
+				<span class="code_padding_bc"></span><span class="code_padding_bc"></span>top: 0,<br />
+				<span class="code_padding_bc"></span><span class="code_padding_bc"></span>width: 920<br />
+				<span class="code_padding_bc"></span> },<br />
+				<span class="code_padding_bc"></span>boundingClientRect: ClientRect {<br />
+				<span class="code_padding_bc"></span><span class="code_padding_bc"></span> // ...<br />
+				<span class="code_padding_bc"></span>},<br />
+				<span class="code_padding_bc"></span> intersectionRect: ClientRect {<br />
+				<span class="code_padding_bc"></span><span class="code_padding_bc"></span> // ...<br />
+				<span class="code_padding_bc"></span> },
+				<span class="code_padding_bc"></span> intersectionRatio: 0.54,<br />
+				<span class="code_padding_bc"></span> target: element<br /> }
+				<br />
+			</div>
+			<div>
+				<ul>
+					<li>time：可见性发生变化的时间，是一个高精度时间戳，单位为毫秒</li>
+					<li>target：被观察的目标元素，是一个 DOM 节点对象</li>
+					<li>rootBounds：根元素的矩形区域的信息，getBoundingClientRect()方法的返回值，如果没有根元素（即直接相对于视口滚动），则返回null</li>
+					<li>boundingClientRect：目标元素的矩形区域的信息</li>
+					<li>intersectionRect：目标元素与视口（或根元素）的交叉区域的信息</li>
+					<li>intersectionRatio：目标元素的可见比例，即intersectionRect占boundingClientRect的比例，完全可见时为1，完全不可见时小于等于0</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+
+</html>

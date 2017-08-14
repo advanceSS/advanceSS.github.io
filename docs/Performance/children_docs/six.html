@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="children_content_wrapper">
+			<a href="https://segmentfault.com/a/1190000007913386" class="can_kao_bc">参考</a>
+			<div>当你触摸滑动页面时，页面应该跟随手指一起滚动。而此时你绑定了一个 touchstart 事件，你的事件大概执行 200 毫秒。这时浏览器就犯迷糊了：如果你在事件绑定函数中调用了 preventDefault，那么页面就不应该滚动，如果你没有调用 preventDefault，页面就需要滚动。但是你到底调用了还是没有调用，浏览器不知道。只能先执行你的函数，等 200 毫秒后，绑定事件执行完了，浏览器才知道，“哦，原来你没有阻止默认行为，好的，我马上滚”。此时，页面开始滚</div>
+			<div>也就是说，当浏览器等待执行事件的默认行为时，大部分情况是白等了。如果 Web 开发者能够提前告诉浏览器：“我不调用 preventDefault 函数来阻止事件事件行为”，那么浏览器就能快速生成事件，从而提升页面性能</div>
+			<div>而 passive 就是为此而生的。在 WICG 的 demo 中提到，即使滚动事件里面写一个死循环，浏览器也能够正常处理页面的滑动。在最新的 DOM 规范中，事件绑定函数的第三个参数变成了对象：</div>
+			<div class="code_wrapper_bc">
+				target.addEventListener(type, listener[, options]);
+			</div>
+			<div>我们可以通过传递 passive 为 true 来明确告诉浏览器，事件处理程序不会调用 preventDefault 来阻止默认滑动行为</div>
+			<div>Chrome 51 和 Firefox 49 已经支持 passive 属性。如果浏览器不支持，已经有人做了非常巧妙地 polyfill：</div>
+			<div class="code_wrapper_bc">
+				var supportsPassive = false;<br />
+				try {<br />
+				 <span class="code_padding_bc"></span> var opts = Object.defineProperty({}, 'passive', {<br />
+				    <span class="code_padding_bc"></span><span class="code_padding_bc"></span>get: function() {<br />
+				      <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>supportsPassive = true;<br />
+				   <span class="code_padding_bc"></span><span class="code_padding_bc"></span> }<br />
+				  <span class="code_padding_bc"></span>});<br />
+				  <span class="code_padding_bc"></span>window.addEventListener("test", null, opts);<br />
+				} catch (e) {}<br />				
+				elem.addEventListener(<br />
+				 <span class="code_padding_bc"></span> 'touchstart',<br />
+				 <span class="code_padding_bc"></span> fn,<br />
+				 <span class="code_padding_bc"></span> supportsPassive ? { passive: true } : false<br />
+				); <br />
+			</div>
+		</div>
+	</body>
+</html>
