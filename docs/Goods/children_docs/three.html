@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="children_content_wrapper">
+			<a href="http://www.zhangxinxu.com/wordpress/2017/08/css-percent-padding-image-layout/" class="can_kao_bc">参考</a>
+			<h4>CSS百分比padding都是相对宽度计算的</h4>
+			<div>
+				在默认的水平文档流方向下，CSS margin和padding属性的垂直方向的百分比值都是相对于宽度计算的，这个和top, bottom等属性的百分比值不一样。
+			</div>
+			<br />
+			<div>但是有时候我们的图片是不方便作为背景图呈现的，而是内联的<img>，百分比padding也是可以轻松应对的，求套路是比较固定的，图片元素外面需要一个固定比例的容器元素，例如下面的HTML结构</div>
+			<div class="code_wrapper_bc">
+				&lt;div class="banner"&gt;<br />
+				 <span class="code_padding_bc"></span> &lt;img src=""banner.jpg&gt;<br />
+				&lt;/div&gt;<br />
+			</div>
+			<div><span class="code_bc">.banner</span>元素同样负责控制比例，然后图片填充.banner元素即可，CSS代码如下：</div>
+			<div class="code_wrapper_bc">
+				.banner {<br />
+				  <span class="code_padding_bc"></span>  padding: 15.15% 0 0;<br />
+				   <span class="code_padding_bc"></span> position: relative;<br />
+				}<br />
+				.banner > img {<br />
+				    <span class="code_padding_bc"></span>position: absolute;<br />
+				    <span class="code_padding_bc"></span>width: 100%; height: 100%;<br />
+				    <span class="code_padding_bc"></span>left: 0; top: 0;<br />
+				}<br />
+			</div>
+		</div>
+	</body>
+</html>
