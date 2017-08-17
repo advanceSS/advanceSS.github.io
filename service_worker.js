@@ -33,6 +33,7 @@ var cache_files=[
 	"docs/Performance/index.html",
 	"docs/Goods/children_docs/one.html",
 	"docs/Goods/children_docs/two.html",
+	"docs/Goods/children_docs/three.html",
 	"docs/Goods/index.html",
 ];
 
