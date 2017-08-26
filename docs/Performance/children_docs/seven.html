@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="children_content_wrapper">
+			<a href="https://juejin.im/post/599e35b6f265da24975feaa5" class="can_kao_bc">参考</a>
+			<ul>
+				<li>chrome 会自动把当前页面的所有带href的link的dns都prefetch一遍</li>
+				<li>需要手动添加link标签的场景是：你预计用户在后面的访问中需要用到当前页面的所有链接都不包含的域名</li>
+			</ul>
+			<div class="code_wrapper_bc">
+				&lt;link rel="dns-prefetch" href="//delai.me"&gt;
+			</div>
+			<h4>DNS预解析使用的正确姿势</h4>
+			<ul>
+				<li>1.对静态资源域名做手动dns prefetching。</li>
+				<li>2.对js里会发起的跳转、请求做手动dns prefetching。</li>
+				<li>3.不用对超链接做手动dns prefetching，因为chrome会自动做dns prefetching。</li>
+				<li>4.对重定向跳转的新域名做手动dns prefetching，比如：页面上有个A域名的链接，但访问A会重定向到B域名的链接，这么在当前页对B域名做手动dns prefetching是有意义的</li>
+			</ul>
+		</div>
+	</body>
+</html>
