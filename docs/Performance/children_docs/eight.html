@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div class="children_content_wrapper">
+			<a href="https://juejin.im/post/599e35d6518825244c0ceb28" class="can_kao_bc">参考</a>
+			<h4>第一个版本，简单粗暴有点痛</h4>
+			<div>1、建一个独立的页面，里面索引了各种需要预加载的css、js，代码类似下面这样。</div>
+			<img src="../../../img/demo10.png" /><br />
+			<div>2、 在每个页面加入一个iframe（一般通过base模板统一加），这样每个页面打开的时候都会加载上面这个页面。假设上面的页面的url是 https://xxx.com/common/prefetching.html 那么我们每个页面底部都有这么一行代码</div>
+			<div class="code_wrapper_bc">
+				&lt;iframe src="https://youzan.com/common/prefetching.html" sytle="display:none;"&gt;&lt;/iframe&gt;
+			</div>
+			<h4>第二个版本</h4>
+			<div>目前看来，上面这个 File Prefeching 的方案是有效的。不过这种是最简陋的试验版，存在几个问题</div>
+			<ul>
+				<li>1.prefetching.html 里的js会被执行，然后不可避免地会有一堆js错误 —— 看着难受~</li>
+				<li>2.通过iframe 加载 prefetching.html 会影响到当前页面相关资源的加载速度</li>
+				<li>3.每次打开页面都会加载一次 prefetching.html，虽然里面的静态文件都已经在第一次打开的时候被cache住了不会重复下载，但无谓多一个请求终究是没必要</li>
+			</ul>
+			<div>于是，我们上线使用的版本是这样的</div>
+			<div class="code_wrapper_bc">
+				<div class="annotation_bc">// 打开一个iframe，下载之后页面可能需要的js/css</div>
+				setTimeout(function() { <br />
+				<span class="code_padding_bc"></span> var lastOpenTime = 0;<br />
+				<span class="code_padding_bc"></span>var nowTime = (new Date()).getTime();<br />
+				<span class="code_padding_bc"></span>try {<br />
+				<span class="code_padding_bc"></span> <span class="code_padding_bc"></span> lastOpenTime = window.localStorage.getItem('staticIframeOpenTime');<br />
+				<span class="code_padding_bc"></span>} catch (e) {}<br />
+				<br />
+				<span class="code_padding_bc"></span> if (lastOpenTime > 0 && (nowTime - lastOpenTime
+				< 24 * 3600 * 1000)) {<br />
+				<div class="annotation_bc"><span class="code_padding_bc"></span><span class="code_padding_bc"></span>// 24小时打开一次iframe</div>
+				<span class="code_padding_bc"></span><span class="code_padding_bc"></span> return;<br />
+				<span class="code_padding_bc"></span> }<br />
+				<br />
+				<span class="code_padding_bc"></span> var iframe = iframe.css('display', 'none');<br />
+				<span class="code_padding_bc"></span><span class="code_padding_bc"></span> iframe.attr('src', 'https://youzan.com/common/prefetching.html')<br />
+				<span class="code_padding_bc"></span><span class="code_padding_bc"></span> iframe.appendTo(document.body);<br />
+				<br />
+				<span class="code_padding_bc"></span> try {<br />
+				<span class="code_padding_bc"></span><span class="code_padding_bc"></span>window.localStorage.setItem('staticIframeOpenTime', nowTime);<br />
+				<span class="code_padding_bc"></span> } catch (e) {}<br /> }, 3000);<br />
+				<div class="annotation_bc">// 延时3秒钟加载prefetching.html</div>
+			</div>
+			<div>prefetching.html 里的资源想办法让他下载但不执行，基本上都是把这些css/js文件当做其他类型的文件来加载，最后参照了<a href="http://www.phpied.com/preload-cssjavascript-without-execution/">《Preload CSS/JavaScript without execution》</a>这篇文章，prefetching.html 中加载js文件的代码大概是这样的</div>
+		</div>
+	</body>
+
+</html>
