@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="children_content_wrapper">
+			<div class="code_wrapper_bc">
+				  if (navigator.userAgent.indexOf("Android") > -1) {<br />
+       <span class="code_padding_bc"></span> window.addEventListener("resize", (function () {<br />
+            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>var dom, timer, initWindowHeight = window.innerHeight;<br />
+            <span class="code_padding_bc"></span><span class="code_padding_bc"></span>return function () {<br />
+               <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> var activeDom = document.activeElement;<br />
+               <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> if (activeDom && (activeDom.tagName.toString().toUpperCase() == "INPUT" || activeDom.tagName.toString().toUpperCase() == "TEXTAREA")) {<br />
+                   <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> cancelAnimationFrame(timer);<br />
+                  <span class="code_padding_bc"></span> <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> timer = requestAnimationFrame(function () {<br />
+                       <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> if (dom == null && window.innerHeight < initWindowHeight) {<br />
+                            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>dom = document.createElement("div");<br />
+                           <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> dom.style.height = initWindowHeight - window.innerHeight + "px";<br />
+                            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>var contentDom = document.querySelector("#content");<br />
+                            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>if (contentDom) contentDom.appendChild(dom);<br />
+                       <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> }<br />
+                       <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> if (dom) {<br />
+                           <div class="annotation_bc"><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> <span class="code_padding_bc"></span>//键盘弹起<br /></div> 
+                           <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> <span class="code_padding_bc"></span>if (window.innerHeight < initWindowHeight) {<br />
+                               <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> <span class="code_padding_bc"></span><span class="code_padding_bc"></span> dom.style.display = "block";<br />
+                               <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> <span class="code_padding_bc"></span><span class="code_padding_bc"></span> activeDom.scrollIntoViewIfNeeded(true);<br />
+                           <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> <span class="code_padding_bc"></span> } else dom.style.display = "none";<br />
+                        <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>}<br />
+                    <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>});<br />
+               <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span> }<br />
+           <span class="code_padding_bc"></span><span class="code_padding_bc"></span> }<br />
+       <span class="code_padding_bc"></span> })(), false);<br />
+    }<br />
+			</div>
+		</div>
+	</body>
+</html>

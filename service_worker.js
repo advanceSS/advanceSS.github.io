@@ -28,6 +28,7 @@ var cache_files=[
 	"docs/Mobile/children_docs/two.html",
 	"docs/Mobile/children_docs/three.html",
 	"docs/Mobile/children_docs/four.html",
+	"docs/Mobile/children_docs/five.html",
 	"docs/Mobile/index.html",
 	"docs/NoKnow/children_docs/one.html",
 	"docs/NoKnow/index.html",
