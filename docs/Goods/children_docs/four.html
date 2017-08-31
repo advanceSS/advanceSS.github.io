@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="children_content_wrapper">
+			<div>表单控件的光标颜色是根据color属性来控制的,但是怎么控制字体颜色和光标的颜色不一致呢</div>
+			<h4>1.模拟光标</h4>
+			<div>一直以来要实现这样的效果都是依靠模拟来实现。主要借助于CSS的-webkit-text-fill-color让文本变成镂空的，即把其设置为transparent，记住了，不是直接将color的值设置为transparent。除此之外，还需要借助text-shadow的威力。</div>
+			<div class="code_wrapper_bc">
+				.form-control { <br />
+				<span class="code_padding_bc"></span>	color: red !important;<br />
+					<span class="code_padding_bc"></span> text-shadow: 0px 0px 0px #495057; <br />
+					<span class="code_padding_bc"></span> -webkit-text-fill-color: transparent; <br />
+					 }
+			</div>
+			<div>text-fill-color:文字填充颜色</div>
+			<div>若同时设置text-fill-color和color，text-fill-color定义的颜色将覆盖color属性；</div>
+			<h4>2.caret-color</h4>
+			<div>到今天为止，我们不需要这么蛋疼了。CSS提供了一个属性caret-color，可以直接让我们控制input和textarea控件的光标颜色，甚至是可编辑的HTML元素，像这样的&lt;div contenteditable&gt;</div>
+			<div class="code_wrapper_bc">
+				input, textarea, [contenteditable] { <br />
+					<span class="code_padding_bc"></span>color: #495057; <span class="annotation_bc">/* 文本颜色 */ </span> <br />
+					<span class="code_padding_bc"></span>caret-color: red; <span class="annotation_bc"> /* 光标颜色 */</span>  <br />
+					}
+			</div>
+		</div>
+	</body>
+</html>

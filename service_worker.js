@@ -45,6 +45,7 @@ var cache_files=[
 	"docs/Goods/children_docs/one.html",
 	"docs/Goods/children_docs/two.html",
 	"docs/Goods/children_docs/three.html",
+	"docs/Goods/children_docs/four.html",
 	"docs/Goods/index.html",
 ];
 
