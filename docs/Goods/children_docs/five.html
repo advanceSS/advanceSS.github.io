@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="children_content_wrapper">
+			<div>border-radius属性的值的顺序    border-top-left-radius;border-top-right-radius;border-bottom-right-radius;border-bottom-left-radius;</div>
+			<h4>1.画一个半圆</h4>
+			<div class="code_wrapper_bc">
+				.box{<br />
+					<span class="code_padding_bc"></span>width:200px;<br />
+					<span class="code_padding_bc"></span>height:100px;<br />
+					<span class="code_padding_bc"></span>background-color:red;<br />
+					<span class="code_padding_bc"></span>border-radius:200px 200px 0 0;<br />
+				}<br />
+			</div>
+			<div style="width: 200px;height: 100px;background-color: red;border-radius: 200px 200px 0 0;"></div>
+			<h4>2.画一个四分之一圆</h4>
+			<div class="code_wrapper_bc">
+				.box{<br />
+					<span class="code_padding_bc"></span>width:200px;<br />
+					<span class="code_padding_bc"></span>height:200px;<br />
+					<span class="code_padding_bc"></span>background-color:red;<br />
+					<span class="code_padding_bc"></span>border-radius:200px 0 0 0;<br />
+				}<br />
+			</div>
+			<div style="width: 200px;height: 200px;background-color: red;border-radius: 200px 0 0 0;"></div>
+			<h4>3.水平半径与垂直半径</h4>
+			<div>border-radius给我们提供了这样的方案：</div>
+			<div class="code_wrapper_bc">
+				border-radius：水平半径 ／ 垂直半径;
+			</div>
+			<img src="../../../img/demo17.jpeg" />
+			<h4>4.画一个椭圆</h4>
+			<div class="code_wrapper_bc">
+				.box{<br />
+					<span class="code_padding_bc"></span>width:200px;<br />
+					<span class="code_padding_bc"></span>height:100px;<br />
+					<span class="code_padding_bc"></span>background-color:red;<br />
+					<span class="code_padding_bc"></span>border-radius:100px / 50px;<br />
+				}<br />
+			</div>
+			<div style="width: 200px;height: 100px;background-color: red;border-radius: 100px / 50px;"></div>
+			<h4>5.画一个半椭圆</h4>
+			<div class="code_wrapper_bc">
+				.box{<br />
+					<span class="code_padding_bc"></span>width:200px;<br />
+					<span class="code_padding_bc"></span>height:100px;<br />
+					<span class="code_padding_bc"></span>background-color:red;<br />
+					<span class="code_padding_bc"></span>border-radius:200px 0 0 200px / 50px 0 0 50px;<br />
+				}<br />
+			</div>
+			<div style="width: 200px;height: 100px;background-color: red;border-radius: 200px 0 0 200px / 50px 0 0 50px;"></div>
+			<h4>6.画一个树叶</h4>
+			<div class="code_wrapper_bc">
+				.box{<br />
+					<span class="code_padding_bc"></span>width:200px;<br />
+					<span class="code_padding_bc"></span>height:200px;<br />
+					<span class="code_padding_bc"></span>background-color:red;<br />
+					<span class="code_padding_bc"></span>border-radius: 200px 0 200px 0;<br />
+				}<br />
+			</div>
+			<div style="width: 200px;height: 200px;background-color: red;border-radius: 200px 0 200px 0;"></div>
+		</div>
+	</body>
+</html>
