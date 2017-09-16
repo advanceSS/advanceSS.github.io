@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div class="children_menu_wrapper">		
+		</div>
+		<script type="text/javascript">
+			!(function() {
+				var model = [
+					{ Name: "适配问题", Url: "docs/Mobiles/children_docs/one.html" },					
+				];
+				model.map(function(item) {
+					var div = document.createElement("div");
+					div.className = "list_bc";
+					div.dataset.url=item.Url;
+					div.innerHTML = "<a href='#'>" + item.Name + "</a>";									
+					document.currentScript.ownerDocument.querySelector(".children_menu_wrapper").appendChild(div);
+				});				
+			})();
+		</script>
+	</body>
+
+</html>
