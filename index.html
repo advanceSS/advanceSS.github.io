@@ -440,7 +440,7 @@
 
 			//注册service Worker
 			if(navigator.serviceWorker) {
-				navigator.serviceWorker.register("./service_worker.js", { scope: "./" })
+				navigator.serviceWorker.register("./service_worker.js?time="+new Date().getTime(), { scope: "./" })
 					.then(function(registration) {
 						console.log(registration);
 					})

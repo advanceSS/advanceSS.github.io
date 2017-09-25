@@ -47,10 +47,13 @@ var cache_files=[
 	"docs/Goods/children_docs/two.html",
 	"docs/Goods/children_docs/three.html",
 	"docs/Goods/children_docs/four.html",
+	"docs/Goods/children_docs/five.html",
+	"docs/Goods/children_docs/six.html",
 	"docs/Goods/index.html",
 	"docs/Mobiles/children_docs/one.html",
 	"docs/Mobiles/children_docs/two.html",
 	"docs/Mobiles/index.html",
+	"./index.html",
 ];
 
 //self: 表示 Service Worker 作用域, 也是全局变量

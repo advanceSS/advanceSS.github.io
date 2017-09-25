@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div class="children_content_wrapper">
+			<a href="http://www.zhangxinxu.com/wordpress/2017/08/iframe-html5-blob-code-view/" class="can_kao_bc">参考</a>
+			<h4>核心原理</h4>
+			<ul>
+				<li>1.创建&lt;iframe&gt;元素；</li>
+			    <li>2.将CSS，HTML字符串转换为Blob对象；</li>
+			    <li>3.使用URL.createObjectURL()方法将Blob对象转换为URL对象并赋予我们创建的&lt;iframe&gt;元素的src属性</li>			   
+			</ul>
+			<div>使用JavaScript代码表示更加一目了然：</div>
+			<div class="code_wrapper_bc">
+				<div class="annotation_bc"> 1. 创建&lt;iframe&gt;元素</div>
+var iframe = document.createElement('iframe');<br />
+<div class="annotation_bc">// 2. 将CSS，HTML字符串转换为Blob对象</div>
+var blob = new Blob([htmlCode], {<br />
+  <span class="code_padding_bc"></span> 'type': 'text/html'<br />
+});<br />
+<div class="annotation_bc">// 3. 使用URL.createObjectURL()方法将...</div>
+iframe.src = URL.createObjectURL(blob);<br />
+			</div>
+		</div>
+	</body>
+</html>
