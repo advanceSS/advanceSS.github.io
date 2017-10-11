@@ -53,6 +53,8 @@ var cache_files=[
 	"docs/Mobiles/children_docs/one.html",
 	"docs/Mobiles/children_docs/two.html",
 	"docs/Mobiles/index.html",
+	"docs/SourceCode/children_docs/one.html",	
+	"docs/SourceCode/index.html",
 	"./index.html",
 ];
 
