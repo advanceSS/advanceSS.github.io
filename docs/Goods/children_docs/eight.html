@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="children_content_wrapper">
+			<h4>1.访问DOM更新后的真实数据($nextTick)</h4>
+			<div class="code_wrapper_bc">
+				export default {<br />
+				  <span class="code_padding_bc"></span>  data () {<br />
+				  <span class="code_padding_bc"></span><span class="code_padding_bc"></span>      return {<br />
+				            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>test: 'begin'<br />
+				        <span class="code_padding_bc"></span><span class="code_padding_bc"></span>};<br />
+				    <span class="code_padding_bc"></span>},<br />
+				    <span class="code_padding_bc"></span>methods () {<br />
+				        <span class="code_padding_bc"></span><span class="code_padding_bc"></span>handleClick () {<br />
+				            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>this.test = 'end';<br />
+				            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>this.$nextTick(() => {<br />
+				                <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>console.log(this.$refs.test.innerText);//打印"end"<br />
+				            <span class="code_padding_bc"></span><span class="code_padding_bc"></span><span class="code_padding_bc"></span>});<br />
+				            
+				        <span class="code_padding_bc"></span><span class="code_padding_bc"></span>}<br />
+				    <span class="code_padding_bc"></span>}<br />
+				}<br />
+			</div>
+		</div>
+	</body>
+</html>

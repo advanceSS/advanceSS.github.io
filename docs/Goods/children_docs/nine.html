@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="children_content_wrapper">
+			<h4>position：absolute 的深入探讨</h4>
+			<div>当给元素设置absolute的时候，它会往上查找 absolute 元素的第一个父元素，如果该父元素的 position 值存在（且不为 static）,那么就是根据该父元素进行的定位，否则将会继续查找该父元素的父元素，一直追溯到某个父元素具备不为 static 的 position 值为止，如果不存在满足条件的父元素，则会根据最外层的 window 进行定位。</div>
+		</div>
+	</body>
+</html>
